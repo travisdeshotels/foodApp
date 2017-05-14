@@ -2,6 +2,7 @@ package tk.codedojo.food.beans;
 
 import lombok.*;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 @NoArgsConstructor
@@ -16,6 +17,7 @@ public class MenuItem {
     private String foodItem;
 
     @NonNull
-    private Float price;
+    @Min(value=0L)
+    private Double price;
     //TODO have price getter return properly formatted price
 }

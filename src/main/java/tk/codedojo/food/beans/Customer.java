@@ -19,6 +19,6 @@ public class Customer {
     private String lastName;
     private String firstName;
     @NonNull
-    @Size(min=6)
+    //TODO implement minimum length for usernames
     private String userName;
 }

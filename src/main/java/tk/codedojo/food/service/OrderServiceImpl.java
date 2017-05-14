@@ -8,8 +8,8 @@ import tk.codedojo.food.beans.Restaurant;
 import tk.codedojo.food.dao.CustomerDao;
 import tk.codedojo.food.dao.OrderDao;
 import tk.codedojo.food.dao.RestaurantDao;
-import tk.codedojo.food.exception.CustomerNotFound;
-import tk.codedojo.food.exception.RestaurantNotFound;
+import tk.codedojo.food.exception.CustomerNotFoundException;
+import tk.codedojo.food.exception.RestaurantNotFoundException;
 
 import java.util.List;
 
@@ -25,20 +25,21 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderDao orderDao;
 
-    public boolean addOrder(Order order) throws Exception{
+    public void addOrder(Order order) throws Exception{
+        System.out.println(order.getRestaurantID());
+        System.out.println(order.getCustomerID());
         Restaurant restaurant = restaurantDao.findOne(order.getRestaurantID());
         if(restaurant == null){
-            throw new RestaurantNotFound("Order does not have a valid restaurant!");
+            throw new RestaurantNotFoundException("Order does not have a valid restaurant!");
         }
         if(customerDao.findOne(order.getCustomerID()) == null){
-            throw new CustomerNotFound("Order does not have a valid customer!");
+            throw new CustomerNotFoundException("Order does not have a valid customer!");
         }
         if(order.getItems() == null){
             throw new NullPointerException();
         }
         //TODO verify that the items being ordered are on the menu
         orderDao.save(order);
-        return true;
     }
 
     private boolean itemIsOnMenu(String item, List<MenuItem> menuItems){

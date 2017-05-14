@@ -24,5 +24,5 @@ public class Order {
     @Size(min=1)
     private String restaurantID;
     @NonNull
-    private List<MenuItem> items;
+    private List<OrderItem> items;
 }

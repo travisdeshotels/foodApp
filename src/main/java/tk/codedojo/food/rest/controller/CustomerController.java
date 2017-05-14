@@ -36,16 +36,16 @@ public class CustomerController {
         } catch (UserNameAlreadyInUseException e){
             e.printStackTrace();
             //TODO log exception
-            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } catch (NullPointerException e){
             e.printStackTrace();
             //TODO log exception
-            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } catch (Exception e){
             e.printStackTrace();
             //TODO log exception
-            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<String>(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
