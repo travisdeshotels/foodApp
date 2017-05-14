@@ -9,7 +9,9 @@ Currently working in the API
 * view all orders
 * view the menu for each restaurant
 * view a restaurant's orders
+* view a restaurant's orders that are open
 * view a customer's orders
+* view a customer's orders that are open
 * add a customer
 * add a restaurant
 * place an order

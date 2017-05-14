@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Order;
+import tk.codedojo.food.beans.OrderItem;
 import tk.codedojo.food.beans.Restaurant;
 import tk.codedojo.food.dao.CustomerDao;
 import tk.codedojo.food.dao.OrderDao;
 import tk.codedojo.food.dao.RestaurantDao;
 import tk.codedojo.food.exception.CustomerNotFoundException;
+import tk.codedojo.food.exception.ItemNotOnMenuException;
 import tk.codedojo.food.exception.OrderNotFoundException;
 import tk.codedojo.food.exception.RestaurantNotFoundException;
 
@@ -47,12 +49,21 @@ public class OrderServiceImpl implements OrderService {
             throw new NullPointerException();
         }
         order.setComplete(false);
-        //TODO verify that the items being ordered are on the menu
+        //check that each item in the order is on the menu
+        for (OrderItem item : order.getItems()){
+            if (!itemIsOnMenu(item.getMenuItem().getFoodItem(),restaurant.getMenuItems())){
+                throw new ItemNotOnMenuException("An item on the order is not on the menu!");
+            }
+        }
         orderDao.save(order);
     }
 
     private boolean itemIsOnMenu(String item, List<MenuItem> menuItems){
-        //TODO implement this
-        return false;
+        for(MenuItem menuItem : menuItems){
+            if(!item.equals(menuItem.getFoodItem())){
+                return false;
+            }
+        }
+        return true;
     }
 }

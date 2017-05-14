@@ -11,12 +11,16 @@ public class CustomerServiceImpl implements CustomerService{
     @Autowired
     CustomerDao dao;
 
+    public boolean usernameInUse(String username){
+        return dao.getCustomerByUserName(username)!=null;
+    }
+
     public void addCustomer(Customer c) throws Exception{
         if(c.getUserName()==null || "".equals(c.getUserName()) ){
-            throw new NullPointerException();
+            throw new NullPointerException("You must provide a username!");
         } else{
             //username not already in use
-            if(dao.getCustomerByUserName(c.getUserName())==null){
+            if(!this.usernameInUse(c.getUserName())){
                 dao.save(c);
             } else{
                 throw new UserNameAlreadyInUseException("This username is already in use!");

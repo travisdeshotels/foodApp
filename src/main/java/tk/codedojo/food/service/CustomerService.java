@@ -4,4 +4,5 @@ import tk.codedojo.food.beans.Customer;
 
 public interface CustomerService {
     void addCustomer(Customer c) throws Exception;
+    boolean usernameInUse(String username);
 }
