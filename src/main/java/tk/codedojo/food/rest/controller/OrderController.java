@@ -29,12 +29,22 @@ public class OrderController {
     }
 
     @RequestMapping(method=RequestMethod.GET, value="/customer/{id}", produces= MediaType.APPLICATION_JSON_VALUE)
-    public List<Order> getOrdersForCustomer(@PathVariable("id") String customerID){
+    public List<Order> getOpenOrdersForCustomer(@PathVariable("id") String customerID){
+        return orderDao.getOpenOrdersByCustomerID(customerID);
+    }
+
+    @RequestMapping(method=RequestMethod.GET, value="/customer/all/{id}", produces= MediaType.APPLICATION_JSON_VALUE)
+    public List<Order> getAllOrdersForCustomer(@PathVariable("id") String customerID){
         return orderDao.getByCustomerID(customerID);
     }
 
     @RequestMapping(method=RequestMethod.GET, value="/restaurant/{id}", produces= MediaType.APPLICATION_JSON_VALUE)
-    public List<Order> getOrdersForRestaurant(@PathVariable("id") String restaurantID){
+    public List<Order> getOpenOrdersForRestaurant(@PathVariable("id") String restaurantID){
+        return orderDao.getOpenOrdersByRestaurantID(restaurantID);
+    }
+
+    @RequestMapping(method=RequestMethod.GET, value="/restaurant/all/{id}", produces= MediaType.APPLICATION_JSON_VALUE)
+    public List<Order> getAllOrdersForRestaurant(@PathVariable("id") String restaurantID){
         return orderDao.getByRestaurantID(restaurantID);
     }
 
@@ -51,7 +61,7 @@ public class OrderController {
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
-    public ResponseEntity<String> completeOrder(String orderID){
+    public ResponseEntity<String> completeOrder(@PathVariable("id") String orderID){
         try {
             orderService.completeOrder(orderID);
         } catch(OrderNotFoundException e){
