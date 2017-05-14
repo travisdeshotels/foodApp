@@ -19,5 +19,4 @@ public class MenuItem {
     @NonNull
     @Min(value=0L)
     private Double price;
-    //TODO have price getter return properly formatted price
 }

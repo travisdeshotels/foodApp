@@ -18,11 +18,12 @@ public class Order {
     @Id
     private String id;
     @NonNull
-    @Size(min=1)
     private String customerID;
     @NonNull
-    @Size(min=1)
     private String restaurantID;
+
+    private Boolean complete;
+
     @NonNull
     private List<OrderItem> items;
 }

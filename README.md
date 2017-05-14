@@ -6,6 +6,7 @@ This implementation uses MongoDB and Spring Data.
 Currently working in the API
 * view all restaurants
 * view all customers
+* view all orders
 * view the menu for each restaurant
 * view a restaurant's orders
 * view a customer's orders
@@ -13,3 +14,4 @@ Currently working in the API
 * add a restaurant
 * place an order
 * update a restaurant's menu
+* complete an order

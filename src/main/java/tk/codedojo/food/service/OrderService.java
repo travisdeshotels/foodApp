@@ -4,4 +4,5 @@ import tk.codedojo.food.beans.Order;
 
 public interface OrderService {
     void addOrder(Order order) throws Exception;
+    void completeOrder(String orderID) throws Exception;
 }
