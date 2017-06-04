@@ -20,13 +20,13 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    CustomerDao customerDao;
+    private CustomerDao customerDao;
 
     @Autowired
-    RestaurantDao restaurantDao;
+    private RestaurantDao restaurantDao;
 
     @Autowired
-    OrderDao orderDao;
+    private OrderDao orderDao;
 
     public void completeOrder(String orderID) throws Exception{
         Order order = orderDao.findOne(orderID);

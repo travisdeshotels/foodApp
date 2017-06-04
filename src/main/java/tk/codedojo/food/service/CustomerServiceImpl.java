@@ -9,7 +9,7 @@ import tk.codedojo.food.exception.UserNameAlreadyInUseException;
 @Service
 public class CustomerServiceImpl implements CustomerService{
     @Autowired
-    CustomerDao dao;
+    private CustomerDao dao;
 
     public boolean usernameInUse(String username){
         return dao.getCustomerByUserName(username)!=null;

@@ -15,7 +15,7 @@ import java.util.List;
 public class RestaurantServiceImpl implements RestaurantService {
 
     @Autowired
-    RestaurantDao dao;
+    private RestaurantDao dao;
 
     public void addRestaurant(Restaurant r) throws Exception{
         if(r.getName()==null || "".equals(r.getName())){

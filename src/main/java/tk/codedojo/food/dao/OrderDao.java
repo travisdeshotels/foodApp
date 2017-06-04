@@ -9,12 +9,12 @@ import java.util.List;
 
 @Repository
 public interface OrderDao extends MongoRepository<Order, String>{
-    public List<Order> getByRestaurantID(String id);
-    public List<Order> getByCustomerID(String id);
+    List<Order> getByRestaurantID(String id);
+    List<Order> getByCustomerID(String id);
 
     @Query("{$and: [{customerID: ?0 }, {complete: false}]}")
-    public List<Order> getOpenOrdersByCustomerID(String customerID);
+    List<Order> getOpenOrdersByCustomerID(String customerID);
 
     @Query("{$and: [{restaurantID: ?0 }, {complete: false}]}")
-    public List<Order> getOpenOrdersByRestaurantID(String customerID);
+    List<Order> getOpenOrdersByRestaurantID(String customerID);
 }

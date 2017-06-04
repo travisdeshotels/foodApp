@@ -19,10 +19,10 @@ import java.util.List;
 @RequestMapping("/api/food/customer")
 public class CustomerController {
     @Autowired
-    CustomerDao dao;
+    private CustomerDao dao;
 
     @Autowired
-    CustomerService service;
+    private CustomerService service;
 
     @RequestMapping(method=RequestMethod.GET)
     public List<Customer> getCustomers(){

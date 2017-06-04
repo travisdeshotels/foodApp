@@ -6,5 +6,5 @@ import tk.codedojo.food.beans.Customer;
 
 @Repository
 public interface CustomerDao extends MongoRepository<Customer, String>{
-    public Customer getCustomerByUserName(String userName);
+    Customer getCustomerByUserName(String userName);
 }

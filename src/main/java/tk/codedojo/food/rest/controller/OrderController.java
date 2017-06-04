@@ -10,7 +10,6 @@ import tk.codedojo.food.dao.OrderDao;
 import tk.codedojo.food.exception.OrderNotFoundException;
 import tk.codedojo.food.service.OrderService;
 
-import javax.print.DocFlavor;
 import java.util.List;
 
 @RestController
@@ -18,10 +17,10 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
 
     @Autowired
-    OrderDao orderDao;
+    private OrderDao orderDao;
 
     @RequestMapping(method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
     public List<Order> getOrders(){

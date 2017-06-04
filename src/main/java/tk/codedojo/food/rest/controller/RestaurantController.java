@@ -18,10 +18,10 @@ import java.util.List;
 public class RestaurantController {
 
     @Autowired
-    RestaurantDao dao;
+    private RestaurantDao dao;
 
     @Autowired
-    RestaurantService service;
+    private RestaurantService service;
 
     @RequestMapping(method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Restaurant> getRestaurants(){
