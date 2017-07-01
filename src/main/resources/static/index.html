@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="foodApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Amazing Food-Ordering App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+    <script src="js/MenuControl.js"></script>
+</head>
+<body ng-controller="foodControl">
+    <div ng-repeat="r in restaurants">
+        <div ng-click="selectRestaurant(r)">
+            {{r.name}}
+        </div>
+    </div>
+    <div>
+        <div ng-repeat="i in selectedRestaurant.menuItems">
+            {{i.foodItem}} : {{i.price}}
+        </div>
+    </div>
+</body>
+</html>

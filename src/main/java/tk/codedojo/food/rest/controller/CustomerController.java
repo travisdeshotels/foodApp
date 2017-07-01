@@ -1,5 +1,7 @@
 package tk.codedojo.food.rest.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,21 +33,20 @@ public class CustomerController {
 
     @RequestMapping(method=RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addCustomer(@RequestBody Customer c){
+        Logger log = LoggerFactory.getLogger(CustomerController.class.getName());
         try {
             service.addCustomer(c);
         } catch (UserNameAlreadyInUseException e){
-            e.printStackTrace();
-            //TODO log exception
+            log.error("UserNameAlreadyInUseException", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } catch (NullPointerException e){
-            e.printStackTrace();
-            //TODO log exception
+            log.error("NullPointerException", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } catch (Exception e){
-            e.printStackTrace();
-            //TODO log exception
+            log.error("", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+        log.trace("Customer added: " + c.toString());
         return new ResponseEntity(HttpStatus.OK);
     }
 }

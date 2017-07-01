@@ -1,5 +1,7 @@
 package tk.codedojo.food.rest.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
@@ -49,29 +51,30 @@ public class OrderController {
 
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<String> addOrder(@RequestBody Order order){
+        Logger log = LoggerFactory.getLogger(OrderController.class.getName());
         try{
             orderService.addOrder(order);
         } catch(Exception e){
-            //TODO log exception
-            e.printStackTrace();
+            log.error("", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+        log.trace("Order added: " + order.toString());
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
     public ResponseEntity<String> completeOrder(@PathVariable("id") String orderID){
+        Logger log = LoggerFactory.getLogger(OrderController.class.getName());
         try {
             orderService.completeOrder(orderID);
         } catch(OrderNotFoundException e){
-            //TODO log exception
-            e.printStackTrace();
+            log.error("OrderNotFoundException", e);
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         } catch (Exception e){
-            //TODO log exception
-            e.printStackTrace();
+            log.error("", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+        log.trace("Completed order " + orderID);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

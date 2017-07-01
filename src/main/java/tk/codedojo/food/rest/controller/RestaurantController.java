@@ -1,5 +1,7 @@
 package tk.codedojo.food.rest.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -8,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
 import tk.codedojo.food.dao.RestaurantDao;
+import tk.codedojo.food.exception.RestaurantAddressMissingException;
 import tk.codedojo.food.exception.RestaurantNotFoundException;
+import tk.codedojo.food.exception.RestaurantNotNamedException;
 import tk.codedojo.food.service.RestaurantService;
 
 import java.util.List;
@@ -30,30 +34,37 @@ public class RestaurantController {
 
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<String> addRestaurant(@RequestBody Restaurant r){
+        Logger log = LoggerFactory.getLogger(RestController.class.getName());
         try {
             service.addRestaurant(r);
+        } catch (RestaurantNotNamedException e){
+            log.error("RestaurantNotNamedException", e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        } catch (RestaurantAddressMissingException e){
+            log.error("RestaurantAddressMissingException", e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } catch (Exception e){
-            //TODO add more catch clauses with logging
-            e.printStackTrace();
+            log.error("", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+        log.trace("Restaurant added: " + r.toString());
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
     public ResponseEntity<Restaurant> updateMenu(@PathVariable("id") String id, @RequestBody List<MenuItem> menu){
         Restaurant r;
+        Logger log = LoggerFactory.getLogger(RestController.class.getName());
         try {
             r = service.updateMenu(id, menu);
         } catch (RestaurantNotFoundException e){
-            //TODO log error
-            e.printStackTrace();
+            log.error("RestaurantNotFoundException", e);
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         } catch (Exception e){
-            //TODO log error
-            e.printStackTrace();
+            log.error("", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+        log.trace("Menu updated for Restaurant: " + r.toString());
         return new ResponseEntity(r, HttpStatus.OK);
     }
 }
