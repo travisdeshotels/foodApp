@@ -11,13 +11,17 @@ public class CustomerServiceImpl implements CustomerService{
     @Autowired
     private CustomerDao dao;
 
+    private static final int MIN_USERNAME_LENGTH = 3;
+
     public boolean usernameInUse(String username){
         return dao.getCustomerByUserName(username)!=null;
     }
 
     public void addCustomer(Customer c) throws UserNameException{
-        if(c.getUserName()==null || "".equals(c.getUserName()) ){
+        if(c.getUserName()==null || "".equals(c.getUserName())) {
             throw new UserNameException("You must provide a username!");
+        } else if(c.getUserName().length() < MIN_USERNAME_LENGTH){
+            throw new UserNameException("Username must be at least " + MIN_USERNAME_LENGTH + " characters!");
         } else{
             //username not already in use
             if(!this.usernameInUse(c.getUserName())){

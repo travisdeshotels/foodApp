@@ -33,7 +33,13 @@ public class RestaurantServiceImpl implements RestaurantService {
         if(menu == null){
             throw new RestaurantException("Cannot perform update, menu is empty!");
         }
-        //TODO validate the menu items
+        for (MenuItem item : menu){
+            if(item.getPrice()<0){
+                throw new RestaurantException("Menu items must have valid prices!");
+            } else if ("".equals(item.getFoodItem())){
+                throw new RestaurantException("Menu items must have valid names!");
+            }
+        }
         r.setMenuItems(menu);
         dao.save(r);
         return r;
