@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tk.codedojo.food.beans.Order;
 import tk.codedojo.food.dao.OrderDao;
+import tk.codedojo.food.exception.InvalidOrderException;
 import tk.codedojo.food.exception.OrderNotFoundException;
 import tk.codedojo.food.service.OrderService;
 
@@ -52,8 +53,11 @@ public class OrderController {
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<String> addOrder(@RequestBody Order order){
         Logger log = LoggerFactory.getLogger(OrderController.class.getName());
-        try{
+        try {
             orderService.addOrder(order);
+        } catch(InvalidOrderException e){
+                log.error("InvalidOrderException", e);
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } catch(Exception e){
             log.error("", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

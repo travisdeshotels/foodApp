@@ -24,12 +24,12 @@
 
     </appender>
 
-    <logger name="tk.codedojo" level="trace"
+    <logger name="tk.codedojo" level="warn"
             additivity="false">
         <appender-ref ref="FILE-AUDIT" />
     </logger>
 
-    <root level="trace">
+    <root level="warn">
         <appender-ref ref="FILE-AUDIT" />
     </root>
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tk.codedojo.food.beans.Customer;
 import tk.codedojo.food.dao.CustomerDao;
-import tk.codedojo.food.exception.UserNameAlreadyInUseException;
+import tk.codedojo.food.exception.UserNameException;
 import tk.codedojo.food.service.CustomerService;
 
 import java.util.List;
@@ -36,11 +36,8 @@ public class CustomerController {
         Logger log = LoggerFactory.getLogger(CustomerController.class.getName());
         try {
             service.addCustomer(c);
-        } catch (UserNameAlreadyInUseException e){
-            log.error("UserNameAlreadyInUseException", e);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        } catch (NullPointerException e){
-            log.error("NullPointerException", e);
+        } catch (UserNameException e){
+            log.error("UserNameException", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } catch (Exception e){
             log.error("", e);

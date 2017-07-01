@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
 import tk.codedojo.food.dao.RestaurantDao;
-import tk.codedojo.food.exception.RestaurantAddressMissingException;
-import tk.codedojo.food.exception.RestaurantNotFoundException;
-import tk.codedojo.food.exception.RestaurantNotNamedException;
+import tk.codedojo.food.exception.*;
 
 import java.util.List;
 
@@ -17,23 +15,23 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Autowired
     private RestaurantDao dao;
 
-    public void addRestaurant(Restaurant r) throws Exception{
+    public void addRestaurant(Restaurant r) throws RestaurantException{
         if(r.getName()==null || "".equals(r.getName())){
-            throw new RestaurantNotNamedException("Restaurants must have names!");
+            throw new RestaurantException("Restaurants must have names!");
         } else if (r.getAddress()==null || "".equals(r.getAddress())){
-            throw new RestaurantAddressMissingException("Restaurants must have an address!");
+            throw new RestaurantException("Restaurants must have an address!");
         } else{
             dao.save(r);
         }
     }
 
-    public Restaurant updateMenu(String restaurantID, List<MenuItem> menu) throws Exception{
+    public Restaurant updateMenu(String restaurantID, List<MenuItem> menu) throws RestaurantException{
         Restaurant r = dao.findOne(restaurantID);
         if(r == null){
-           throw new RestaurantNotFoundException("Cannot update menu, restaurant id not valid!");
+           throw new RestaurantException("Cannot update menu, restaurant id not valid!");
         }
         if(menu == null){
-            throw new NullPointerException("Cannot perform update, menu is empty!");
+            throw new RestaurantException("Cannot perform update, menu is empty!");
         }
         //TODO validate the menu items
         r.setMenuItems(menu);

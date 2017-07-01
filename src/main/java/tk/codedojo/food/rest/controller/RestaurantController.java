@@ -10,9 +10,7 @@ import org.springframework.http.ResponseEntity;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
 import tk.codedojo.food.dao.RestaurantDao;
-import tk.codedojo.food.exception.RestaurantAddressMissingException;
-import tk.codedojo.food.exception.RestaurantNotFoundException;
-import tk.codedojo.food.exception.RestaurantNotNamedException;
+import tk.codedojo.food.exception.RestaurantException;
 import tk.codedojo.food.service.RestaurantService;
 
 import java.util.List;
@@ -37,11 +35,8 @@ public class RestaurantController {
         Logger log = LoggerFactory.getLogger(RestController.class.getName());
         try {
             service.addRestaurant(r);
-        } catch (RestaurantNotNamedException e){
-            log.error("RestaurantNotNamedException", e);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        } catch (RestaurantAddressMissingException e){
-            log.error("RestaurantAddressMissingException", e);
+        } catch (RestaurantException e){
+            log.error("RestaurantException", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } catch (Exception e){
             log.error("", e);
@@ -57,8 +52,8 @@ public class RestaurantController {
         Logger log = LoggerFactory.getLogger(RestController.class.getName());
         try {
             r = service.updateMenu(id, menu);
-        } catch (RestaurantNotFoundException e){
-            log.error("RestaurantNotFoundException", e);
+        } catch (RestaurantException e){
+            log.error("RestaurantException", e);
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         } catch (Exception e){
             log.error("", e);

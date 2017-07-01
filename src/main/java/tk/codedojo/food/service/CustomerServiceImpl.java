@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.Customer;
 import tk.codedojo.food.dao.CustomerDao;
-import tk.codedojo.food.exception.UserNameAlreadyInUseException;
+import tk.codedojo.food.exception.UserNameException;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
@@ -15,15 +15,15 @@ public class CustomerServiceImpl implements CustomerService{
         return dao.getCustomerByUserName(username)!=null;
     }
 
-    public void addCustomer(Customer c) throws Exception{
+    public void addCustomer(Customer c) throws UserNameException{
         if(c.getUserName()==null || "".equals(c.getUserName()) ){
-            throw new NullPointerException("You must provide a username!");
+            throw new UserNameException("You must provide a username!");
         } else{
             //username not already in use
             if(!this.usernameInUse(c.getUserName())){
                 dao.save(c);
             } else{
-                throw new UserNameAlreadyInUseException("This username is already in use!");
+                throw new UserNameException("This username is already in use!");
             }
         }
     }
