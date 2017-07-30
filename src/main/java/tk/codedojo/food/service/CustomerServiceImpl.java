@@ -18,7 +18,7 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     public void addCustomer(Customer c) throws UserNameException{
-        if(c.getUserName()==null || "".equals(c.getUserName())) {
+        if("".equals(c.getUserName())) {
             throw new UserNameException("You must provide a username!");
         } else if(c.getUserName().length() < MIN_USERNAME_LENGTH){
             throw new UserNameException("Username must be at least " + MIN_USERNAME_LENGTH + " characters!");

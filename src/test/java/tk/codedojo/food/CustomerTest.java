@@ -30,22 +30,32 @@ public class CustomerTest {
         assertNotNull(customerDao);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testNullUserName(){
+        Customer customer = new Customer("4","Smith","Sob",null);
+    }
+
     @Test
-    public void testSave() throws UserNameException {
-        Customer customer = new Customer();
-        when(customerDao.save(customer)).thenReturn(null);
+    public void testValidSave() throws UserNameException {
         when(customerDao.getCustomerByUserName("bob")).thenReturn(null);
-        when(customerDao.getCustomerByUserName("tom")).thenReturn(new Customer("2", "Smith", "Tom", "tom"));
-
-        customer = new Customer("1", "Smith", "Bob", "bob");
+        Customer customer = new Customer("1", "Smith", "Bob", "bob");
         customerService.addCustomer(customer);
+    }
 
-        customer = new Customer("2", "Smith", "Tom", "tom");
-        try {
-            customerService.addCustomer(customer);
-            assert(false);
-        } catch (UserNameException e){
-            assert(true);
-        }
+    @Test(expected = UserNameException.class)
+    public void testDuplicate() throws UserNameException{
+        when(customerDao.getCustomerByUserName("tom")).thenReturn(new Customer("2", "Smith", "Tom", "tom"));
+        Customer customer = new Customer("2", "Smith", "Tom", "tom");
+        customerService.addCustomer(customer);
+    }
+
+    @Test(expected = UserNameException.class)
+    public void testShortUserName() throws UserNameException{
+        customerService.addCustomer(new Customer("3", "Smith", "Rob", "ro"));
+    }
+
+    @Test(expected = UserNameException.class)
+    public void testEmptyUserName() throws UserNameException{
+        customerService.addCustomer(new Customer("5", "Smith", "Cob", ""));
     }
 }
