@@ -16,9 +16,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     private RestaurantDao dao;
 
     public void addRestaurant(Restaurant r) throws RestaurantException{
-        if(r.getName()==null || "".equals(r.getName())){
+        if("".equals(r.getName())){
             throw new RestaurantException("Restaurants must have names!");
-        } else if (r.getAddress()==null || "".equals(r.getAddress())){
+        } else if ("".equals(r.getAddress())){
             throw new RestaurantException("Restaurants must have an address!");
         } else{
             dao.save(r);

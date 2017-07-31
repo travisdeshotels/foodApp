@@ -18,10 +18,8 @@ public class Restaurant {
     @Id
     private String id;
     @NonNull
-    @Size(min=1)
     private String name;
     @NonNull
-    @Size(min=1)
     private String address;
     private List<MenuItem> menuItems;
 }
