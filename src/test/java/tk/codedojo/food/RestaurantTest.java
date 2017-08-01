@@ -13,7 +13,6 @@ import tk.codedojo.food.exception.RestaurantException;
 import tk.codedojo.food.service.RestaurantServiceImpl;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;

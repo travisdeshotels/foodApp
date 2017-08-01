@@ -42,9 +42,6 @@ public class OrderServiceImpl implements OrderService {
         if(customerDao.findOne(order.getCustomerID()) == null){
             throw new InvalidOrderException("Order does not have a valid customer!");
         }
-        if(order.getItems() == null){
-            throw new InvalidOrderException("Order must have items!");
-        }
         order.setComplete(false);
         //check that each item in the order is on the menu
         for (OrderItem item : order.getItems()){

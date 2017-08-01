@@ -13,10 +13,7 @@ import javax.validation.constraints.Size;
 @Setter
 public class MenuItem {
     @NonNull
-    @Size(min=1)
     private String foodItem;
-
     @NonNull
-    @Min(value=0L)
     private Double price;
 }

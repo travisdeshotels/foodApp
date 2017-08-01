@@ -1,7 +1,7 @@
 # foodApp
 This is a food ordering app that I am redoing. The original project was a team project which used Oracle SQL and Hibernate.
 
-This implementation uses MongoDB and Spring Data.
+This project includes MongoDB, Spring Data, Spring Rest, Spring Boot, Logback, Lombok, Junit, and Mockito.
 
 Currently working in the API
 * view all restaurants
