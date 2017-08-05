@@ -5,6 +5,6 @@ import tk.codedojo.food.exception.UserNameException;
 
 
 public interface CustomerService {
-    boolean addCustomer(Customer c) throws UserNameException;
+    void addCustomer(Customer c) throws UserNameException;
     boolean usernameInUse(String username);
 }

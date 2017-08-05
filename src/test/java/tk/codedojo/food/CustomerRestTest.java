@@ -1,56 +1,50 @@
 package tk.codedojo.food;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.skyscreamer.jsonassert.JSONAssert;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import tk.codedojo.food.beans.Customer;
 import tk.codedojo.food.dao.CustomerDao;
-import tk.codedojo.food.dao.OrderDao;
-import tk.codedojo.food.dao.RestaurantDao;
+import tk.codedojo.food.rest.controller.CustomerController;
 import tk.codedojo.food.service.CustomerService;
-import tk.codedojo.food.service.CustomerServiceImpl;
-import tk.codedojo.food.service.OrderService;
-import tk.codedojo.food.service.RestaurantService;
 import tk.codedojo.food.exception.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 @WebMvcTest
 public class CustomerRestTest {
-
-    @Autowired
     private MockMvc mockMvc;
-    @MockBean
+    @Mock
     private CustomerService customerService;
-    @MockBean
+    @Mock
     private CustomerDao customerDao;
-    @MockBean
-    private OrderDao orderDao;
-    @MockBean
-    private OrderService orderService;
-    @MockBean
-    private RestaurantDao restaurantDao;
-    @MockBean
-    private RestaurantService restaurantService;
+    @InjectMocks
+    private CustomerController customerController;
+
+    @Before
+    public void setup(){
+        this.mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
+    }
 
     @Test
     public void testGetCustomer() throws Exception {
@@ -60,7 +54,6 @@ public class CustomerRestTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/food/customer").accept(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-
         String expected = "[{\"id\":\"1\",\"lastName\":\"Orr\",\"firstName\":\"Richard\",\"userName\":\"Ricky\"}]";
         JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
     }
@@ -71,30 +64,32 @@ public class CustomerRestTest {
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/food/customer").accept(MediaType.APPLICATION_JSON).
                 content(content).contentType(MediaType.APPLICATION_JSON);
-
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-
         MockHttpServletResponse response = result.getResponse();
-
         assertEquals(HttpStatus.CREATED.value(), response.getStatus());
     }
 
     @Test
     public void testAddDuplicateCustomer() throws Exception {
-        //Customer myCustomer = new Customer("1", "Orr", "Richard", "Ricky");
-        Customer myCustomer = mock(Customer.class);
-
-        when(customerService.addCustomer(myCustomer)).thenThrow(new UserNameException(""));
+        doThrow(new UserNameException("")).when(customerService).addCustomer(any());
 
         String content = "{\"lastName\" : \"Orr\",\"firstName\" : \"Richard\",\"userName\" : \"Ricky\"}";
-
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/food/customer").accept(MediaType.APPLICATION_JSON).
                 content(content).contentType(MediaType.APPLICATION_JSON);
-
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-
         MockHttpServletResponse response = result.getResponse();
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+    }
 
-        assertEquals(HttpStatus.CREATED.value(), response.getStatus());
+    @Test
+    public void testAddCustomerFail() throws Exception {
+        doThrow(new NullPointerException("")).when(customerService).addCustomer(any());
+
+        String content = "{\"lastName\" : \"Orr\",\"firstName\" : \"Richard\",\"userName\" : \"Ricky\"}";
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/food/customer").accept(MediaType.APPLICATION_JSON).
+                content(content).contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
     }
 }

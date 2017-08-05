@@ -17,7 +17,7 @@ public class CustomerServiceImpl implements CustomerService{
         return dao.getCustomerByUserName(username)!=null;
     }
 
-    public boolean addCustomer(Customer c) throws UserNameException{
+    public void addCustomer(Customer c) throws UserNameException{
         if("".equals(c.getUserName())) {
             throw new UserNameException("You must provide a username!");
         } else if(c.getUserName().length() < MIN_USERNAME_LENGTH){
@@ -30,6 +30,5 @@ public class CustomerServiceImpl implements CustomerService{
                 throw new UserNameException("This username is already in use!");
             }
         }
-        return true;
     }
 }
