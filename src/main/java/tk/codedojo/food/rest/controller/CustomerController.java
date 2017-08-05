@@ -32,7 +32,7 @@ public class CustomerController {
     }
 
     @RequestMapping(method=RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addCustomer(@RequestBody Customer c){
+    public ResponseEntity<Customer> addCustomer(@RequestBody Customer c){
         Logger log = LoggerFactory.getLogger(CustomerController.class.getName());
         try {
             service.addCustomer(c);
@@ -44,6 +44,6 @@ public class CustomerController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         log.trace("Customer added: " + c.toString());
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(c, HttpStatus.CREATED);
     }
 }

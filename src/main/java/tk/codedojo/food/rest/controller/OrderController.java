@@ -63,7 +63,7 @@ public class OrderController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         log.trace("Order added: " + order.toString());
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
@@ -79,6 +79,6 @@ public class OrderController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         log.trace("Completed order " + orderID);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }

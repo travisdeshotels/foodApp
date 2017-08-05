@@ -43,7 +43,7 @@ public class RestaurantController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         log.trace("Restaurant added: " + r.toString());
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
@@ -60,6 +60,6 @@ public class RestaurantController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         log.trace("Menu updated for Restaurant: " + r.toString());
-        return new ResponseEntity(r, HttpStatus.OK);
+        return new ResponseEntity(r, HttpStatus.CREATED);
     }
 }
