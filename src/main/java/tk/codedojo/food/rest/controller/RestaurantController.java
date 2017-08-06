@@ -60,6 +60,6 @@ public class RestaurantController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         log.trace("Menu updated for Restaurant: " + r.toString());
-        return new ResponseEntity(r, HttpStatus.CREATED);
+        return new ResponseEntity(r, HttpStatus.OK);
     }
 }

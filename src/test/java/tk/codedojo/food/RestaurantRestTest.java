@@ -25,7 +25,11 @@ import tk.codedojo.food.service.RestaurantService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -75,10 +79,73 @@ public class RestaurantRestTest {
                 .content("[{\"foodItem\":\"Boudin\",\"price\":1.0}]")
                 ).andReturn();
         MockHttpServletResponse response = result.getResponse();
-        if (response == null){
-            System.out.println(":(");
-        } else {
-            System.out.println(response.getContentAsString());
-        }
+        String expected = "{\"id\":\"1\",\"name\":\"Boudreauxs\",\"address\":\"123 street\",\"menuItems\":[{\"foodItem\":\"Cracklin\",\"price\":2.0}]}";
+        assertEquals(response.getStatus(), 200);
+        JSONAssert.assertEquals(expected, response.getContentAsString(), false);
     }
+
+    @Test
+    public void testUpdateMenuRestaurantException() throws Exception {
+        List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new MenuItem("Boudin", 1d));
+        List<MenuItem> newMenuItems = new ArrayList<>();
+        newMenuItems.add(new MenuItem("Cracklin", 2d));
+        when(restaurantService.updateMenu("1", menuItems)).thenThrow(new RestaurantException(""));
+        MvcResult result = mockMvc.perform(put(
+                "/api/food/restaurant/id/{id}", "1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("[{\"foodItem\":\"Boudin\",\"price\":1.0}]")
+        ).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(response.getStatus(), 404);
+    }
+
+    @Test
+    public void testUpdateMenuOtherException() throws Exception {
+        List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new MenuItem("Boudin", 1d));
+        List<MenuItem> newMenuItems = new ArrayList<>();
+        newMenuItems.add(new MenuItem("Cracklin", 2d));
+        when(restaurantService.updateMenu("1", menuItems)).thenThrow(new NullPointerException());
+        MvcResult result = mockMvc.perform(put(
+                "/api/food/restaurant/id/{id}", "1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("[{\"foodItem\":\"Boudin\",\"price\":1.0}]")
+        ).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(response.getStatus(), 400);
+    }
+
+    @Test
+    public void testAddRestaurant() throws Exception {
+        MvcResult result = mockMvc.perform(post(
+                "/api/food/restaurant")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": \"1\", \"name\": \"Boudreauxs\", \"address\": \"123 street\", \"menuItems\":[{\"foodItem\": \"Boudin\", \"price\": \"1.0\"}]}")).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(response.getStatus(), 201);
+    }
+
+    @Test
+    public void testRestaurantExceptionAdd() throws Exception {
+        doThrow(new RestaurantException("")).when(restaurantService).addRestaurant(any());
+        MvcResult result = mockMvc.perform(post(
+                "/api/food/restaurant")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": \"1\", \"name\": \"Boudreauxs\", \"address\": \"123 street\", \"menuItems\":[{\"foodItem\": \"Boudin\", \"price\": \"1.0\"}]}")).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(response.getStatus(), 400);
+    }
+
+    @Test
+    public void testAddRestaurantException() throws Exception {
+        doThrow(new NullPointerException("")).when(restaurantService).addRestaurant(any());
+        MvcResult result = mockMvc.perform(post(
+                "/api/food/restaurant")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": \"1\", \"name\": \"Boudreauxs\", \"address\": \"123 street\", \"menuItems\":[{\"foodItem\": \"Boudin\", \"price\": \"1.0\"}]}")).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(response.getStatus(), 400);
+    }
+
 }
