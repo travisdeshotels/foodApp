@@ -79,6 +79,6 @@ public class OrderController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         log.trace("Completed order " + orderID);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
