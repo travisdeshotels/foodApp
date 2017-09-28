@@ -18,4 +18,7 @@ public class Customer {
     private String firstName;
     @NonNull
     private String userName;
+    @NonNull
+    private String password;
+    private String email;
 }

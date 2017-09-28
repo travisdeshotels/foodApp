@@ -49,7 +49,7 @@ public class CustomerRestTest {
     @Test
     public void testGetCustomer() throws Exception {
         List<Customer> customers = new ArrayList<>();
-        customers.add(new Customer("1", "Orr", "Richard", "Ricky"));
+        customers.add(new Customer("1", "Orr", "Richard", "Ricky", "p4ssw0rd", ""));
         when(customerDao.findAll()).thenReturn(customers);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/food/customer").accept(MediaType.APPLICATION_JSON);
 
@@ -60,7 +60,7 @@ public class CustomerRestTest {
 
     @Test
     public void testAddCustomer() throws Exception {
-        String content = "{\"lastName\" : \"Orr\",\"firstName\" : \"Richard\",\"userName\" : \"Ricky\"}";
+        String content = "{\"lastName\" : \"Orr\",\"firstName\" : \"Richard\",\"userName\" : \"Ricky\",\"password\" : \"p4ssw0rd\"}";
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/food/customer").accept(MediaType.APPLICATION_JSON).
                 content(content).contentType(MediaType.APPLICATION_JSON);

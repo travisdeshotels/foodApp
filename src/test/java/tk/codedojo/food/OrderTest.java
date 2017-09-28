@@ -98,7 +98,7 @@ public class OrderTest {
     @Test (expected = InvalidOrderException.class)
     public void testInvalidRestaurant() throws InvalidOrderException {
         when(restaurantDao.findOne("1")).thenReturn(null);
-        when(customerDao.findOne("1")).thenReturn(new Customer("1", "a", "a", "abcde"));
+        when(customerDao.findOne("1")).thenReturn(new Customer("1", "a", "a", "abcde", "p4ssw0rd", null));
         MenuItem menuItem = new MenuItem("chaudin", 2d);
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
@@ -127,7 +127,7 @@ public class OrderTest {
         menuItems.add(menuItem);
         when(restaurantDao.findOne("1")).thenReturn(
                 new Restaurant("1", "this", "12", menuItems));
-        when(customerDao.findOne("1")).thenReturn(new Customer("1", "a", "a", "bcad"));
+        when(customerDao.findOne("1")).thenReturn(new Customer("1", "a", "a", "bcad", "p4ssw0rd", null));
         menuItem = new MenuItem("gumbo", 1d);
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
@@ -142,7 +142,7 @@ public class OrderTest {
         menuItems.add(menuItem);
         when(restaurantDao.findOne("1")).thenReturn(
                 new Restaurant("1", "this", "12", menuItems));
-        when(customerDao.findOne("1")).thenReturn(new Customer("1", "a", "a", "bcad"));
+        when(customerDao.findOne("1")).thenReturn(new Customer("1", "a", "a", "bcad", "p4ssw0rd", null));
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
