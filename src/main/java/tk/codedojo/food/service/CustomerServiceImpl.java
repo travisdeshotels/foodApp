@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.Customer;
 import tk.codedojo.food.dao.CustomerDao;
+import tk.codedojo.food.exception.CustomerException;
 import tk.codedojo.food.exception.UserNameException;
 
 @Service
@@ -30,5 +31,20 @@ public class CustomerServiceImpl implements CustomerService{
                 throw new UserNameException("This username is already in use!");
             }
         }
+    }
+
+    public void updateCustomer(Customer c) throws CustomerException {
+        Customer old = dao.findOne(c.getId());
+
+        if(old == null){
+            throw new CustomerException("Customer id is invalid! : "+ c.toString());
+        }
+        if(!old.getUserName().equals(c.getUserName())){
+            //check if new username is available
+            if(usernameInUse(c.getUserName())){
+                throw new CustomerException("Desired username is already in use! : " + c.toString());
+            }
+        }
+        dao.save(c);
     }
 }

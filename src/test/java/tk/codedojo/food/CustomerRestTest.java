@@ -70,6 +70,17 @@ public class CustomerRestTest {
     }
 
     @Test
+    public void testUpdateCustomer() throws Exception{
+        String content = "{\"id\" : \"1\",\"lastName\" : \"last\",\"firstName\" : \"first\",\"userName\" : \"myusername\",\"password\" : \"p4ssw0rd\",\"email\" : \"e@ma.il\"}";
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.put("/api/food/customer").accept(MediaType.APPLICATION_JSON).
+                content(content).contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = this.mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        System.out.println(response.getStatus());
+    }
+
+    @Test
     public void testAddDuplicateCustomer() throws Exception {
         doThrow(new UserNameException("")).when(customerService).addCustomer(any());
 

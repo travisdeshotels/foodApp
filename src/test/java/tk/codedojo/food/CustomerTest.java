@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import tk.codedojo.food.beans.Customer;
 import tk.codedojo.food.dao.CustomerDao;
+import tk.codedojo.food.exception.CustomerException;
 import tk.codedojo.food.exception.UserNameException;
 import tk.codedojo.food.service.CustomerServiceImpl;
 
@@ -58,4 +59,24 @@ public class CustomerTest {
     public void testEmptyUserName() throws UserNameException{
         customerService.addCustomer(new Customer("5", "Smith", "Cob", "", "p4ssw0rd", null));
     }
+
+    @Test
+    public void testUpdateCustomer() throws CustomerException{
+        when(customerDao.findOne("1")).thenReturn(new Customer("1", "l", "f", "myname", "12345", ""));
+        customerService.updateCustomer(new Customer("1", "l", "f", "newname", "12345", ""));
+    }
+
+    @Test(expected = CustomerException.class)
+    public void testUpdateDuplicateCustomer() throws CustomerException{
+        when(customerDao.getCustomerByUserName("newname")).thenReturn(new Customer("2","l","f","newname","12345",""));
+        when(customerDao.findOne("1")).thenReturn(new Customer("1", "l", "f", "myname", "12345", ""));
+        customerService.updateCustomer(new Customer("1", "l", "f", "newname", "12345", ""));
+    }
+
+    @Test(expected = CustomerException.class)
+    public void testUpdateCustomerBadId() throws CustomerException{
+        when(customerDao.getCustomerByUserName("newname")).thenReturn(new Customer("1","l","f","oldname","12345",""));
+        customerService.updateCustomer(new Customer("2","l","f","newname","12345","my@addre.ss"));
+    }
 }
+
