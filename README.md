@@ -17,3 +17,4 @@ Currently working in the API
 * place an order
 * update a restaurant's menu
 * complete an order
+* update customer's info
