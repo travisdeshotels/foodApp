@@ -77,8 +77,21 @@ public class CustomerRestTest {
                 content(content).contentType(MediaType.APPLICATION_JSON);
         MvcResult result = this.mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
-        System.out.println(response.getStatus());
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
+
+    @Test
+    public void testUpdateCustomerException() throws Exception{
+        doThrow(new CustomerException("")).when(customerService).updateCustomer(any());
+
+        String content = "{\"id\" : \"1\",\"lastName\" : \"last\",\"firstName\" : \"first\",\"userName\" : \"myusername\",\"password\" : \"p4ssw0rd\",\"email\" : \"e@ma.il\"}";
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.put("/api/food/customer").accept(MediaType.APPLICATION_JSON).
+                content(content).contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = this.mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+    }
+
 
     @Test
     public void testAddDuplicateCustomer() throws Exception {
