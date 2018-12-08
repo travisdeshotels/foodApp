@@ -7,6 +7,8 @@ import tk.codedojo.food.dao.CustomerDao;
 import tk.codedojo.food.exception.CustomerException;
 import tk.codedojo.food.exception.UserNameException;
 
+import java.util.List;
+
 @Service
 public class CustomerServiceImpl implements CustomerService{
     private CustomerDao dao;
@@ -50,5 +52,9 @@ public class CustomerServiceImpl implements CustomerService{
             }
         }
         dao.save(c);
+    }
+
+    public List<Customer> findAll(){
+        return dao.findAll();
     }
 }

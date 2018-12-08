@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tk.codedojo.food.beans.Customer;
 import tk.codedojo.food.dao.CustomerDao;
+import tk.codedojo.food.dao.CustomerDaoFake;
 import tk.codedojo.food.exception.CustomerException;
 import tk.codedojo.food.exception.UserNameException;
 import tk.codedojo.food.service.CustomerService;
@@ -22,14 +23,11 @@ import java.util.List;
 @RequestMapping("/api/food/customer")
 public class CustomerController {
     @Autowired
-    private CustomerDao dao;
-
-    @Autowired
     private CustomerService service;
 
     @RequestMapping(method=RequestMethod.GET)
     public List<Customer> getCustomers(){
-        return dao.findAll();
+        return service.findAll();
     }
 
     @RequestMapping(method=RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
