@@ -11,9 +11,9 @@ import java.util.List;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
-    private CustomerDao dao;
-
     private static final int MIN_USERNAME_LENGTH = 3;
+
+    private CustomerDao dao;
 
     @Autowired
     public CustomerServiceImpl(CustomerDao dao){
@@ -30,12 +30,15 @@ public class CustomerServiceImpl implements CustomerService{
         } else if(c.getUserName().length() < MIN_USERNAME_LENGTH){
             throw new UserNameException("Username must be at least " + MIN_USERNAME_LENGTH + " characters!");
         } else{
-            //username not already in use
-            if(!this.usernameInUse(c.getUserName())){
-                dao.save(c);
-            } else{
-                throw new UserNameException("This username is already in use!");
-            }
+            saveCustomer(c);
+        }
+    }
+
+    private void saveCustomer(Customer c) throws UserNameException {
+        if(!this.usernameInUse(c.getUserName())){
+            dao.save(c);
+        } else{
+            throw new UserNameException("This username is already in use!");
         }
     }
 
@@ -45,13 +48,14 @@ public class CustomerServiceImpl implements CustomerService{
         if(old == null){
             throw new CustomerException("Customer id is invalid! : "+ c.toString());
         }
-        if(!old.getUserName().equals(c.getUserName())){
-            //check if new username is available
-            if(usernameInUse(c.getUserName())){
-                throw new CustomerException("Desired username is already in use! : " + c.toString());
-            }
-        }
+        checkIfUsernameIsInUse(c.getUserName(), old.getUserName());
         dao.save(c);
+    }
+
+    private void checkIfUsernameIsInUse(String newName, String oldName) throws CustomerException {
+        if(!oldName.equals(newName) && usernameInUse(newName)){
+            throw new CustomerException("Desired username is already in use! : " + newName);
+        }
     }
 
     public List<Customer> findAll(){
