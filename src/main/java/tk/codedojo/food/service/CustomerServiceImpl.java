@@ -9,10 +9,14 @@ import tk.codedojo.food.exception.UserNameException;
 
 @Service
 public class CustomerServiceImpl implements CustomerService{
-    @Autowired
     private CustomerDao dao;
 
     private static final int MIN_USERNAME_LENGTH = 3;
+
+    @Autowired
+    public CustomerServiceImpl(CustomerDao dao){
+        this.dao = dao;
+    }
 
     public boolean usernameInUse(String username){
         return dao.getCustomerByUserName(username)!=null;

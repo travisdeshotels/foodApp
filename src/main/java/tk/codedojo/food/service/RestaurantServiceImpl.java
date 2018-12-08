@@ -11,9 +11,12 @@ import java.util.List;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
+    private RestaurantDao dao;
 
     @Autowired
-    private RestaurantDao dao;
+    public RestaurantServiceImpl(RestaurantDao dao){
+        this.dao = dao;
+    }
 
     public void addRestaurant(Restaurant r) throws RestaurantException{
         if("".equals(r.getName())){

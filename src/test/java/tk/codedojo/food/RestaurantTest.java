@@ -22,7 +22,7 @@ public class RestaurantTest {
     @Mock
     private RestaurantDao restaurantDao;
     @InjectMocks
-    private RestaurantServiceImpl restaurantService = new RestaurantServiceImpl();
+    private RestaurantServiceImpl restaurantService = new RestaurantServiceImpl(restaurantDao);
 
     @Before
     public void setupMock(){

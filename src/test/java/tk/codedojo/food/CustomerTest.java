@@ -19,8 +19,7 @@ import static org.mockito.Mockito.when;
 public class CustomerTest {
     @Mock
     private CustomerDao customerDao;
-    @InjectMocks
-    private CustomerServiceImpl customerService = new CustomerServiceImpl();
+    private CustomerServiceImpl customerService = new CustomerServiceImpl(customerDao);
 
     @Before
     public void setupMock(){

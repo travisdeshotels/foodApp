@@ -15,15 +15,16 @@ import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-
-    @Autowired
     private CustomerDao customerDao;
-
-    @Autowired
     private RestaurantDao restaurantDao;
+    private OrderDao orderDao;
 
     @Autowired
-    private OrderDao orderDao;
+    public OrderServiceImpl(CustomerDao customerDao, RestaurantDao restaurantDao, OrderDao orderDao){
+        this.customerDao = customerDao;
+        this.restaurantDao = restaurantDao;
+        this.orderDao = orderDao;
+    }
 
     public void completeOrder(String orderID) throws OrderNotFoundException{
         Order order = orderDao.findOne(orderID);

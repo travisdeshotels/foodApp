@@ -29,7 +29,7 @@ public class OrderTest {
     @Mock
     private OrderDao orderDao;
     @InjectMocks
-    private OrderServiceImpl orderService = new OrderServiceImpl();
+    private OrderServiceImpl orderService = new OrderServiceImpl(customerDao, restaurantDao, orderDao);
 
     @Before
     public void setupMock(){
