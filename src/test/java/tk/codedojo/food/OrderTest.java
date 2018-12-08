@@ -3,7 +3,6 @@ package tk.codedojo.food;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import tk.codedojo.food.beans.*;
@@ -28,11 +27,11 @@ public class OrderTest {
     private RestaurantDao restaurantDao;
     @Mock
     private OrderDao orderDao;
-    @InjectMocks
-    private OrderServiceImpl orderService = new OrderServiceImpl(customerDao, restaurantDao, orderDao);
+    private OrderServiceImpl orderService;
 
     @Before
     public void setupMock(){
+        orderService = new OrderServiceImpl(customerDao, restaurantDao, orderDao);
     }
 
     @Test

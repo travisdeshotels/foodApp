@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import tk.codedojo.food.beans.Customer;
-import tk.codedojo.food.dao.CustomerDao;
 import tk.codedojo.food.rest.controller.CustomerController;
 import tk.codedojo.food.service.CustomerService;
 import tk.codedojo.food.exception.*;
@@ -36,8 +35,6 @@ public class CustomerRestTest {
     private MockMvc mockMvc;
     @Mock
     private CustomerService customerService;
-    @Mock
-    private CustomerDao customerDao;
     @InjectMocks
     private CustomerController customerController;
 
@@ -50,11 +47,12 @@ public class CustomerRestTest {
     public void testGetCustomer() throws Exception {
         List<Customer> customers = new ArrayList<>();
         customers.add(new Customer("1", "Orr", "Richard", "Ricky", "p4ssw0rd", ""));
-        when(customerDao.findAll()).thenReturn(customers);
+        when(customerService.findAll()).thenReturn(customers);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/food/customer").accept(MediaType.APPLICATION_JSON);
 
         MvcResult result = this.mockMvc.perform(requestBuilder).andReturn();
         String expected = "[{\"id\":\"1\",\"lastName\":\"Orr\",\"firstName\":\"Richard\",\"userName\":\"Ricky\"}]";
+        System.err.println(result.getResponse().getContentAsString());
         JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
     }
 
