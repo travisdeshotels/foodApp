@@ -58,21 +58,37 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public void addOrder(Order order) throws InvalidOrderException {
+        validateOrder(order);
+        order.setComplete(false);
+        orderDao.save(order);
+    }
+
+    private void validateOrder(Order order) throws InvalidOrderException {
+        Restaurant restaurant = validateRestaurant(order);
+        validateCustomer(order);
+        validateOrderItems(order, restaurant);
+    }
+
+    private void validateCustomer(Order order) throws InvalidOrderException {
+        if(customerDao.findOne(order.getCustomerID()) == null){
+            throw new InvalidOrderException("Order does not have a valid customer!");
+        }
+    }
+
+    private Restaurant validateRestaurant(Order order) throws InvalidOrderException {
         Restaurant restaurant = restaurantDao.findOne(order.getRestaurantID());
         if(restaurant == null){
             throw new InvalidOrderException("Order does not have a valid restaurant!");
         }
-        if(customerDao.findOne(order.getCustomerID()) == null){
-            throw new InvalidOrderException("Order does not have a valid customer!");
-        }
-        order.setComplete(false);
-        //check that each item in the order is on the menu
+        return restaurant;
+    }
+
+    private void validateOrderItems(Order order, Restaurant restaurant) throws InvalidOrderException {
         for (OrderItem item : order.getItems()){
             if (!itemIsOnMenu(item.getMenuItem().getFoodItem(),restaurant.getMenuItems())){
                 throw new InvalidOrderException("An item on the order is not on the menu!");
             }
         }
-        orderDao.save(order);
     }
 
     private boolean itemIsOnMenu(String item, List<MenuItem> menuItems){
