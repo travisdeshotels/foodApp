@@ -47,4 +47,9 @@ public class RestaurantServiceImpl implements RestaurantService {
         dao.save(r);
         return r;
     }
+
+    @Override
+    public List<Restaurant> findAll() {
+        return dao.findAll();
+    }
 }

@@ -3,7 +3,6 @@ package tk.codedojo.food;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -35,12 +34,10 @@ public class CustomerRestTest {
     private MockMvc mockMvc;
     @Mock
     private CustomerService customerService;
-    @InjectMocks
-    private CustomerController customerController;
 
     @Before
     public void setup(){
-        this.mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new CustomerController(customerService)).build();
     }
 
     @Test

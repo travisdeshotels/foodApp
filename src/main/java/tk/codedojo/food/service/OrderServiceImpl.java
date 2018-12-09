@@ -2,10 +2,7 @@ package tk.codedojo.food.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.codedojo.food.beans.MenuItem;
-import tk.codedojo.food.beans.Order;
-import tk.codedojo.food.beans.OrderItem;
-import tk.codedojo.food.beans.Restaurant;
+import tk.codedojo.food.beans.*;
 import tk.codedojo.food.dao.CustomerDao;
 import tk.codedojo.food.dao.OrderDao;
 import tk.codedojo.food.dao.RestaurantDao;
@@ -33,6 +30,31 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setComplete(true);
         orderDao.save(order);
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return this.orderDao.findAll();
+    }
+
+    @Override
+    public List<Order> getOpenOrdersByCustomerID(String customerID) {
+        return this.orderDao.getOpenOrdersByCustomerID(customerID);
+    }
+
+    @Override
+    public List<Order> getByCustomerID(String customerID) {
+        return this.orderDao.getByCustomerID(customerID);
+    }
+
+    @Override
+    public List<Order> getOpenOrdersByRestaurantID(String restaurantID) {
+        return this.orderDao.getOpenOrdersByRestaurantID(restaurantID);
+    }
+
+    @Override
+    public List<Order> getByRestaurantID(String restaurantID) {
+        return this.orderDao.getByRestaurantID(restaurantID);
     }
 
     public void addOrder(Order order) throws InvalidOrderException {

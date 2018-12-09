@@ -36,16 +36,13 @@ import static org.junit.Assert.assertEquals;
 @WebMvcTest
 public class OrderRestTest {
     private MockMvc mockMvc;
-    @Mock
-    private OrderDao orderDao;
+
     @Mock
     private OrderService orderService;
-    @InjectMocks
-    private OrderController orderController;
 
     @Before
     public void setup(){
-        this.mockMvc = MockMvcBuilders.standaloneSetup(orderController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new OrderController(orderService)).build();
     }
 
     @Test
@@ -56,7 +53,7 @@ public class OrderRestTest {
         Order order = new Order("1", "1", "1", false, orderItems);
         List<Order> orders = new ArrayList<>();
         orders.add(order);
-        when(orderDao.findAll()).thenReturn(orders);
+        when(orderService.findAll()).thenReturn(orders);
         MvcResult mvcResult = this.mockMvc.perform(get("/api/food/order")).andReturn();
         String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"complete\":false,\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
         JSONAssert.assertEquals(expected, mvcResult.getResponse().getContentAsString(), false);
@@ -70,7 +67,7 @@ public class OrderRestTest {
         Order order = new Order("1", "1", "1", false, orderItems);
         List<Order> orders = new ArrayList<>();
         orders.add(order);
-        when(orderDao.getByCustomerID("1")).thenReturn(orders);
+        when(orderService.getByCustomerID("1")).thenReturn(orders);
         MvcResult mvcResult = this.mockMvc.perform(get("/api/food/order/customer/all/{id}", "1")).andReturn();
         String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"complete\":false,\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
         JSONAssert.assertEquals(expected, mvcResult.getResponse().getContentAsString(), false);
@@ -84,7 +81,7 @@ public class OrderRestTest {
         Order order = new Order("1", "1", "1", false, orderItems);
         List<Order> orders = new ArrayList<>();
         orders.add(order);
-        when(orderDao.getOpenOrdersByCustomerID("1")).thenReturn(orders);
+        when(orderService.getOpenOrdersByCustomerID("1")).thenReturn(orders);
         MvcResult mvcResult = this.mockMvc.perform(get("/api/food/order/customer/{id}", "1")).andReturn();
         String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"complete\":false,\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
         JSONAssert.assertEquals(expected, mvcResult.getResponse().getContentAsString(), false);
@@ -98,7 +95,7 @@ public class OrderRestTest {
         Order order = new Order("1", "1", "1", false, orderItems);
         List<Order> orders = new ArrayList<>();
         orders.add(order);
-        when(orderDao.getByRestaurantID("1")).thenReturn(orders);
+        when(orderService.getByRestaurantID("1")).thenReturn(orders);
         MvcResult mvcResult = this.mockMvc.perform(get("/api/food/order/restaurant/all/{id}", "1")).andReturn();
         String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"complete\":false,\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
         JSONAssert.assertEquals(expected, mvcResult.getResponse().getContentAsString(), false);
@@ -112,7 +109,7 @@ public class OrderRestTest {
         Order order = new Order("1", "1", "1", false, orderItems);
         List<Order> orders = new ArrayList<>();
         orders.add(order);
-        when(orderDao.getOpenOrdersByRestaurantID("1")).thenReturn(orders);
+        when(orderService.getOpenOrdersByRestaurantID("1")).thenReturn(orders);
         MvcResult mvcResult = this.mockMvc.perform(get("/api/food/order/restaurant/{id}", "1")).andReturn();
         String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"complete\":false,\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
         JSONAssert.assertEquals(expected, mvcResult.getResponse().getContentAsString(), false);

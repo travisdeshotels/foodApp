@@ -37,15 +37,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public class RestaurantRestTest {
     private MockMvc mockMvc;
     @Mock
-    private RestaurantDao restaurantDao;
-    @Mock
     private RestaurantService restaurantService;
-    @InjectMocks
-    private RestaurantController restaurantController;
 
     @Before
     public void setup(){
-        this.mockMvc = MockMvcBuilders.standaloneSetup(restaurantController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new RestaurantController(restaurantService)).build();
     }
 
     @Test
@@ -56,7 +52,7 @@ public class RestaurantRestTest {
                 "123 street",menuItems);
         List<Restaurant> restaurants = new ArrayList<>();
         restaurants.add(restaurant);
-        when(restaurantDao.findAll()).thenReturn(restaurants);
+        when(restaurantService.findAll()).thenReturn(restaurants);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/food/restaurant").accept(MediaType.APPLICATION_JSON);
 
         MvcResult result = this.mockMvc.perform(requestBuilder).andReturn();

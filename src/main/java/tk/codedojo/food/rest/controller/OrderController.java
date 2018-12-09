@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tk.codedojo.food.beans.Order;
-import tk.codedojo.food.dao.OrderDao;
 import tk.codedojo.food.exception.InvalidOrderException;
 import tk.codedojo.food.exception.OrderNotFoundException;
 import tk.codedojo.food.service.OrderService;
@@ -18,36 +17,36 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/food/order")
 public class OrderController {
-
-    @Autowired
     private OrderService orderService;
 
     @Autowired
-    private OrderDao orderDao;
+    public OrderController(OrderService orderService){
+        this.orderService = orderService;
+    }
 
     @RequestMapping(method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
     public List<Order> getOrders(){
-        return orderDao.findAll();
+        return orderService.findAll();
     }
 
     @RequestMapping(method=RequestMethod.GET, value="/customer/{id}", produces= MediaType.APPLICATION_JSON_VALUE)
     public List<Order> getOpenOrdersForCustomer(@PathVariable("id") String customerID){
-        return orderDao.getOpenOrdersByCustomerID(customerID);
+        return orderService.getOpenOrdersByCustomerID(customerID);
     }
 
     @RequestMapping(method=RequestMethod.GET, value="/customer/all/{id}", produces= MediaType.APPLICATION_JSON_VALUE)
     public List<Order> getAllOrdersForCustomer(@PathVariable("id") String customerID){
-        return orderDao.getByCustomerID(customerID);
+        return orderService.getByCustomerID(customerID);
     }
 
     @RequestMapping(method=RequestMethod.GET, value="/restaurant/{id}", produces= MediaType.APPLICATION_JSON_VALUE)
     public List<Order> getOpenOrdersForRestaurant(@PathVariable("id") String restaurantID){
-        return orderDao.getOpenOrdersByRestaurantID(restaurantID);
+        return orderService.getOpenOrdersByRestaurantID(restaurantID);
     }
 
     @RequestMapping(method=RequestMethod.GET, value="/restaurant/all/{id}", produces= MediaType.APPLICATION_JSON_VALUE)
     public List<Order> getAllOrdersForRestaurant(@PathVariable("id") String restaurantID){
-        return orderDao.getByRestaurantID(restaurantID);
+        return orderService.getByRestaurantID(restaurantID);
     }
 
     @RequestMapping(method=RequestMethod.POST)

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
-import tk.codedojo.food.dao.RestaurantDao;
 import tk.codedojo.food.exception.RestaurantException;
 import tk.codedojo.food.service.RestaurantService;
 
@@ -18,16 +17,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/food/restaurant")
 public class RestaurantController {
-
-    @Autowired
-    private RestaurantDao dao;
-
-    @Autowired
     private RestaurantService service;
+
+    @Autowired
+    public RestaurantController(RestaurantService service){
+        this.service = service;
+    }
 
     @RequestMapping(method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Restaurant> getRestaurants(){
-        return dao.findAll();
+        return service.findAll();
     }
 
     @RequestMapping(method=RequestMethod.POST)

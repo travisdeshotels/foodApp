@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tk.codedojo.food.beans.Customer;
-import tk.codedojo.food.dao.CustomerDao;
-import tk.codedojo.food.dao.CustomerDaoFake;
 import tk.codedojo.food.exception.CustomerException;
 import tk.codedojo.food.exception.UserNameException;
 import tk.codedojo.food.service.CustomerService;
@@ -22,8 +20,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/food/customer")
 public class CustomerController {
-    @Autowired
     private CustomerService service;
+
+    @Autowired
+    public CustomerController(CustomerService service){
+        this.service = service;
+    }
 
     @RequestMapping(method=RequestMethod.GET)
     public List<Customer> getCustomers(){
