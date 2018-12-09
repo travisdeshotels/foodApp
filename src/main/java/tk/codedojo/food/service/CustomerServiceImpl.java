@@ -43,13 +43,18 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     public void updateCustomer(Customer c) throws CustomerException {
-        Customer old = dao.findOne(c.getId());
-
-        if(old == null){
-            throw new CustomerException("Customer id is invalid! : "+ c.toString());
-        }
+        Customer old = getCustomerFromDatabase(c.getId());
         checkIfUsernameIsInUse(c.getUserName(), old.getUserName());
         dao.save(c);
+    }
+
+    private Customer getCustomerFromDatabase(String id) throws CustomerException {
+        Customer old = dao.findOne(id);
+
+        if(old == null){
+            throw new CustomerException("Customer id is invalid! : "+ id);
+        }
+        return old;
     }
 
     private void checkIfUsernameIsInUse(String newName, String oldName) throws CustomerException {
