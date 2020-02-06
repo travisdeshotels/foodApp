@@ -14,8 +14,10 @@ import tk.codedojo.food.service.RestaurantService;
 
 import java.util.List;
 
+import static tk.codedojo.food.beans.FoodConstants.API_URL;
+
 @RestController
-@RequestMapping("/api/food/restaurant")
+@RequestMapping(API_URL + "/restaurant")
 public class RestaurantController {
     private RestaurantService service;
 
