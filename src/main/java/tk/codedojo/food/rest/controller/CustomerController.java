@@ -2,7 +2,6 @@ package tk.codedojo.food.rest.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMethod;
 import tk.codedojo.food.beans.Customer;
+import tk.codedojo.food.dao.fake.CustomerDaoFake;
 import tk.codedojo.food.exception.CustomerException;
 import tk.codedojo.food.exception.UserNameException;
 import tk.codedojo.food.service.CustomerService;
+import tk.codedojo.food.service.CustomerServiceImpl;
 
 import java.util.List;
 
@@ -24,9 +25,8 @@ import static tk.codedojo.food.beans.FoodConstants.API_URL;
 public class CustomerController {
     private CustomerService service;
 
-    @Autowired
-    public CustomerController(CustomerService service){
-        this.service = service;
+    public CustomerController(){
+        service = new CustomerServiceImpl(new CustomerDaoFake());
     }
 
     @RequestMapping(method=RequestMethod.GET)

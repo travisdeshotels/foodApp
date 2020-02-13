@@ -3,10 +3,11 @@ package tk.codedojo.food;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import tk.codedojo.food.beans.Customer;
-import tk.codedojo.food.dao.CustomerDao;
+import tk.codedojo.food.dao.CustomerDaoType;
 import tk.codedojo.food.exception.CustomerException;
 import tk.codedojo.food.exception.UserNameException;
 import tk.codedojo.food.service.CustomerServiceImpl;
@@ -17,7 +18,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerTest {
     @Mock
-    private CustomerDao customerDao;
+    private CustomerDaoType customerDao;
+    @InjectMocks
     private CustomerServiceImpl customerService;
 
     @Before

@@ -1,23 +1,23 @@
 package tk.codedojo.food.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.*;
-import tk.codedojo.food.dao.CustomerDao;
-import tk.codedojo.food.dao.OrderDao;
-import tk.codedojo.food.dao.RestaurantDao;
+import tk.codedojo.food.dao.CustomerDaoType;
+import tk.codedojo.food.dao.OrderDaoType;
+import tk.codedojo.food.dao.RestaurantDaoType;
 import tk.codedojo.food.exception.*;
 
 import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    private CustomerDao customerDao;
-    private RestaurantDao restaurantDao;
-    private OrderDao orderDao;
+    private CustomerDaoType customerDao;
+    private RestaurantDaoType restaurantDao;
+    private OrderDaoType orderDao;
 
-    @Autowired
-    public OrderServiceImpl(CustomerDao customerDao, RestaurantDao restaurantDao, OrderDao orderDao){
+    public OrderServiceImpl(CustomerDaoType customerDao,
+                            RestaurantDaoType restaurantDao,
+                            OrderDaoType orderDao){
         this.customerDao = customerDao;
         this.restaurantDao = restaurantDao;
         this.orderDao = orderDao;

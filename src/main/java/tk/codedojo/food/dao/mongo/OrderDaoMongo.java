@@ -1,4 +1,4 @@
-package tk.codedojo.food.dao;
+package tk.codedojo.food.dao.mongo;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -8,7 +8,7 @@ import tk.codedojo.food.beans.Order;
 import java.util.List;
 
 @Repository
-public interface OrderDao extends MongoRepository<Order, String>{
+public interface OrderDaoMongo extends MongoRepository<Order, String>{
     List<Order> getByRestaurantID(String id);
     List<Order> getByCustomerID(String id);
 

@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
-import tk.codedojo.food.dao.RestaurantDao;
 import tk.codedojo.food.exception.RestaurantException;
 import tk.codedojo.food.rest.controller.RestaurantController;
 import tk.codedojo.food.service.RestaurantService;
@@ -39,9 +38,12 @@ public class RestaurantRestTest {
     @Mock
     private RestaurantService restaurantService;
 
+    @InjectMocks
+    private RestaurantController restaurantController;
+
     @Before
     public void setup(){
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new RestaurantController(restaurantService)).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(restaurantController).build();
     }
 
     @Test

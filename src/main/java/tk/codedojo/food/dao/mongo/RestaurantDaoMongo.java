@@ -1,9 +1,9 @@
-package tk.codedojo.food.dao;
+package tk.codedojo.food.dao.mongo;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import tk.codedojo.food.beans.Restaurant;
 
 @Repository
-public interface RestaurantDao extends MongoRepository<Restaurant, String> {
+public interface RestaurantDaoMongo extends MongoRepository<Restaurant, String> {
 }

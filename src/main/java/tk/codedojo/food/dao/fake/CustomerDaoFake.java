@@ -1,15 +1,14 @@
-package tk.codedojo.food.dao;
+package tk.codedojo.food.dao.fake;
 
-import org.springframework.stereotype.Repository;
 import tk.codedojo.food.beans.Customer;
+import tk.codedojo.food.dao.CustomerDaoType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
-public class CustomerDaoFake {
+public class CustomerDaoFake implements CustomerDaoType {
     private Map<String, Customer> customerMap;
 
     public CustomerDaoFake(){

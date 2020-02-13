@@ -1,15 +1,14 @@
-package tk.codedojo.food.dao;
+package tk.codedojo.food.dao.fake;
 
-import org.springframework.stereotype.Repository;
 import tk.codedojo.food.beans.Order;
+import tk.codedojo.food.dao.OrderDaoType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
-public class OrderDaoFake {
+public class OrderDaoFake implements OrderDaoType{
     private Map<String, Order> orderMap;
 
     public OrderDaoFake(){

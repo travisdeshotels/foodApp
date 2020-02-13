@@ -1,13 +1,17 @@
 package tk.codedojo.food;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import tk.codedojo.food.beans.*;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.dao.*;
+import tk.codedojo.food.dao.fake.OrderDaoFake;
+import tk.codedojo.food.dao.fake.RestaurantDaoFake;
 import tk.codedojo.food.exception.InvalidOrderException;
 import tk.codedojo.food.exception.OrderNotFoundException;
 import tk.codedojo.food.service.OrderServiceImpl;
@@ -22,11 +26,12 @@ import static org.mockito.Mockito.when;
 public class OrderTest {
 
     @Mock
-    private CustomerDao customerDao;
+    private CustomerDaoType customerDao;
     @Mock
-    private RestaurantDao restaurantDao;
+    private RestaurantDaoType restaurantDao;
     @Mock
-    private OrderDao orderDao;
+    private OrderDaoType orderDao;
+
     private OrderServiceImpl orderService;
 
     @Before

@@ -2,15 +2,16 @@ package tk.codedojo.food.rest.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
+import tk.codedojo.food.dao.fake.RestaurantDaoFake;
 import tk.codedojo.food.exception.RestaurantException;
 import tk.codedojo.food.service.RestaurantService;
+import tk.codedojo.food.service.RestaurantServiceImpl;
 
 import java.util.List;
 
@@ -21,9 +22,8 @@ import static tk.codedojo.food.beans.FoodConstants.API_URL;
 public class RestaurantController {
     private RestaurantService service;
 
-    @Autowired
-    public RestaurantController(RestaurantService service){
-        this.service = service;
+    public RestaurantController(){
+        this.service = new RestaurantServiceImpl(new RestaurantDaoFake());
     }
 
     @RequestMapping(method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

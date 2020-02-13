@@ -8,9 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tk.codedojo.food.beans.Order;
+import tk.codedojo.food.dao.fake.CustomerDaoFake;
+import tk.codedojo.food.dao.fake.OrderDaoFake;
+import tk.codedojo.food.dao.fake.RestaurantDaoFake;
 import tk.codedojo.food.exception.InvalidOrderException;
 import tk.codedojo.food.exception.OrderNotFoundException;
 import tk.codedojo.food.service.OrderService;
+import tk.codedojo.food.service.OrderServiceImpl;
 
 import java.util.List;
 
@@ -21,9 +25,8 @@ import static tk.codedojo.food.beans.FoodConstants.API_URL;
 public class OrderController {
     private OrderService orderService;
 
-    @Autowired
-    public OrderController(OrderService orderService){
-        this.orderService = orderService;
+    public OrderController(){
+        this.orderService = new OrderServiceImpl(new CustomerDaoFake(), new RestaurantDaoFake(), new OrderDaoFake());
     }
 
     @RequestMapping(method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
