@@ -1,5 +1,6 @@
 package tk.codedojo.food.steps;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -30,5 +31,29 @@ public class FunctionalSteps {
         if (this.responseCode != ok) {
             throw new RuntimeException("Failed : HTTP error code : ");
         }
+    }
+
+    @Given("a restaurant exists")
+    public void aRestaurantExists() {
+    }
+
+    @And("a customer exists")
+    public void aCustomerExists() {
+    }
+
+    @And("customer places an order")
+    public void customerPlacesAnOrder() {
+    }
+
+    @Then("customer cancels their order")
+    public void customerCancelsTheirOrder() {
+    }
+
+    @And("a response of {int} is returned")
+    public void aResponseOfIsReturned(int arg0) {
+    }
+
+    @And("the customer has no orders")
+    public void theCustomerHasNoOrders() {
     }
 }
