@@ -56,4 +56,12 @@ public class FunctionalSteps {
     @And("the customer has no orders")
     public void theCustomerHasNoOrders() {
     }
+
+    @When("restaurant is renamed")
+    public void restaurantIsRenamed() {
+    }
+
+    @Given("no restaurants exist")
+    public void noRestaurantsExist() {
+    }
 }
