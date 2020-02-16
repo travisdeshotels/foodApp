@@ -11,19 +11,27 @@ import java.util.Map;
 
 public class RestaurantDaoFake implements RestaurantDaoType {
     private Map<String, Restaurant> restaurantMap;
+    private int id;
 
     public RestaurantDaoFake(){
         restaurantMap = new HashMap<>();
+        this.id = 1;
     }
 
+    @Override
     public void save(Restaurant r){
+        if (r.getId() == null) {
+            r.setId(String.valueOf(this.id++));
+        }
         restaurantMap.put(r.getId(), r);
     }
 
+    @Override
     public Restaurant findOne(String id){
         return restaurantMap.get(id);
     }
 
+    @Override
     public List<Restaurant> findAll(){
         return new ArrayList<>(restaurantMap.values());
     }

@@ -10,9 +10,11 @@ import java.util.Map;
 
 public class OrderDaoFake implements OrderDaoType{
     private Map<String, Order> orderMap;
+    private int id;
 
     public OrderDaoFake(){
         orderMap = new HashMap<>();
+        this.id = 1;
     }
 
     public Order findOne(String id){
@@ -20,6 +22,9 @@ public class OrderDaoFake implements OrderDaoType{
     }
 
     public void save(Order order){
+        if (order.getId() == null) {
+            order.setId(String.valueOf(this.id++));
+        }
         orderMap.put(order.getId(), order);
     }
 

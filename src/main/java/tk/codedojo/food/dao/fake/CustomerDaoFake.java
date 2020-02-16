@@ -10,9 +10,11 @@ import java.util.Map;
 
 public class CustomerDaoFake implements CustomerDaoType {
     private Map<String, Customer> customerMap;
+    private int id;
 
     public CustomerDaoFake(){
         customerMap = new HashMap<>();
+        this.id = 1;
     }
 
     public Customer getCustomerByUserName(String userName){
@@ -25,6 +27,9 @@ public class CustomerDaoFake implements CustomerDaoType {
     }
 
     public void save(Customer c){
+        if (c.getId() == null) {
+            c.setId(String.valueOf(this.id++));
+        }
         customerMap.put(c.getId(), c);
     }
 
