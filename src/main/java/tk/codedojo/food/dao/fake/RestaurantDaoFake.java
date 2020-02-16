@@ -35,4 +35,16 @@ public class RestaurantDaoFake implements RestaurantDaoType {
     public List<Restaurant> findAll(){
         return new ArrayList<>(restaurantMap.values());
     }
+
+    @Override
+    public Restaurant findByName(String name) {
+        for (String id : restaurantMap.keySet()){
+            Restaurant r = restaurantMap.get(id);
+            if (name.equals(r.getName())){
+                return r;
+            }
+        }
+
+        return null;
+    }
 }

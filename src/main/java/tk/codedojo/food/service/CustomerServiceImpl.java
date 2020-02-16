@@ -22,6 +22,7 @@ public class CustomerServiceImpl implements CustomerService{
         return dao.getCustomerByUserName(username)!=null;
     }
 
+    @Override
     public void addCustomer(Customer c) throws UserNameException{
         if("".equals(c.getUserName())) {
             throw new UserNameException("You must provide a username!");
@@ -40,6 +41,7 @@ public class CustomerServiceImpl implements CustomerService{
         }
     }
 
+    @Override
     public void updateCustomer(Customer c) throws CustomerException {
         Customer old = getCustomerFromDatabase(c.getId());
         checkIfUsernameIsInUse(c.getUserName(), old.getUserName());
@@ -61,7 +63,18 @@ public class CustomerServiceImpl implements CustomerService{
         }
     }
 
+    @Override
     public List<Customer> findAll(){
         return dao.findAll();
+    }
+
+    @Override
+    public Customer findOne(String id) {
+        return dao.findOne(id);
+    }
+
+    @Override
+    public Customer GetByUserName(String userName) {
+        return dao.getCustomerByUserName(userName);
     }
 }

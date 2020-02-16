@@ -13,6 +13,9 @@ import tk.codedojo.food.exception.RestaurantException;
 import tk.codedojo.food.service.RestaurantService;
 import tk.codedojo.food.service.RestaurantServiceImpl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static tk.codedojo.food.beans.FoodConstants.API_URL;
@@ -27,7 +30,14 @@ public class RestaurantController {
     }
 
     @RequestMapping(method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Restaurant> getRestaurants(){
+    public List<Restaurant> getRestaurants(
+            @RequestParam(required = false) String id,
+            @RequestParam(required = false) String name){
+        if (id != null && !id.isEmpty()){
+            return Collections.singletonList(service.findOne(id));
+        } else if(name != null && !name.isEmpty()){
+            return Collections.singletonList(service.findByName(name));
+        }
         return service.findAll();
     }
 

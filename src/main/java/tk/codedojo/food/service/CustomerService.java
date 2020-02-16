@@ -11,4 +11,6 @@ public interface CustomerService {
     boolean usernameInUse(String username);
     void updateCustomer(Customer c) throws CustomerException;
     List<Customer> findAll();
+    Customer findOne(String id);
+    Customer GetByUserName(String userName);
 }

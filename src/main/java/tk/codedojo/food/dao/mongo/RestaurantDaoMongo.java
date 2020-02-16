@@ -6,4 +6,5 @@ import tk.codedojo.food.beans.Restaurant;
 
 @Repository
 public interface RestaurantDaoMongo extends MongoRepository<Restaurant, String> {
+    public Restaurant findByName(String name);
 }

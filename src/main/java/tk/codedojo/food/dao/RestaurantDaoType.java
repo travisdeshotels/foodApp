@@ -8,4 +8,5 @@ public interface RestaurantDaoType {
     void save(Restaurant restaurant);
     Restaurant findOne(String id);
     List<Restaurant> findAll();
+    Restaurant findByName(String name);
 }

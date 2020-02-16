@@ -5,10 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import tk.codedojo.food.beans.Customer;
 import tk.codedojo.food.dao.fake.CustomerDaoFake;
 import tk.codedojo.food.exception.CustomerException;
@@ -16,6 +13,7 @@ import tk.codedojo.food.exception.UserNameException;
 import tk.codedojo.food.service.CustomerService;
 import tk.codedojo.food.service.CustomerServiceImpl;
 
+import java.util.Collections;
 import java.util.List;
 
 import static tk.codedojo.food.beans.FoodConstants.API_URL;
@@ -30,8 +28,15 @@ public class CustomerController {
     }
 
     @RequestMapping(method=RequestMethod.GET)
-    public List<Customer> getCustomers(){
-        return service.findAll();
+    public List<Customer> getCustomers(
+        @RequestParam(required = false) String id,
+        @RequestParam(required = false) String userName){
+            if (id != null && !id.isEmpty()){
+                return Collections.singletonList(service.findOne(id));
+            } else if(userName != null && !userName.isEmpty()){
+                return Collections.singletonList(service.GetByUserName(userName));
+            }
+            return service.findAll();
     }
 
     @RequestMapping(method=RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)

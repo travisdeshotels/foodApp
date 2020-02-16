@@ -52,4 +52,14 @@ public class RestaurantServiceImpl implements RestaurantService {
     public List<Restaurant> findAll() {
         return dao.findAll();
     }
+
+    @Override
+    public Restaurant findOne(String id) {
+        return dao.findOne(id);
+    }
+
+    @Override
+    public Restaurant findByName(String name) {
+        return dao.findByName(name);
+    }
 }
