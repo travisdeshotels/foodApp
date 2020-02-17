@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tk.codedojo.food.FoodApplication;
 import tk.codedojo.food.beans.Order;
 import tk.codedojo.food.dao.fake.CustomerDaoFake;
 import tk.codedojo.food.dao.fake.OrderDaoFake;
@@ -26,7 +27,10 @@ public class OrderController {
     private OrderService orderService;
 
     public OrderController(){
-        this.orderService = new OrderServiceImpl(new CustomerDaoFake(), new RestaurantDaoFake(), new OrderDaoFake());
+        this.orderService = new OrderServiceImpl(
+                FoodApplication.getCustomerDaoFake(),
+                FoodApplication.getRestaurantDaoFake(),
+                new OrderDaoFake());
     }
 
     @RequestMapping(method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)

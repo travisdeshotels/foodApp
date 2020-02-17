@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tk.codedojo.food.FoodApplication;
 import tk.codedojo.food.beans.Customer;
 import tk.codedojo.food.dao.fake.CustomerDaoFake;
 import tk.codedojo.food.exception.CustomerException;
@@ -24,7 +25,7 @@ public class CustomerController {
     private CustomerService service;
 
     public CustomerController(){
-        service = new CustomerServiceImpl(new CustomerDaoFake());
+        service = new CustomerServiceImpl(FoodApplication.getCustomerDaoFake());
     }
 
     @RequestMapping(method=RequestMethod.GET)
