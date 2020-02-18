@@ -3,12 +3,12 @@ Feature: Rename Restaurant
 
     @HappyPath @skip
     Scenario: Rename a restaurant
-        Given a restaurant exists
-        When restaurant is renamed
+        Given restaurant test01 exists
+        When test01 restaurant is renamed to test02
         Then a response of 200 is returned
 
     @SadPath @skip
     Scenario: Assert error when the restaurant does not exist
-        Given no restaurants exist
-        When restaurant is renamed
+        Given restaurant test03 does not exist
+        When test01 restaurant is renamed to test02
         Then a response of 400 is returned

@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class FunctionalSteps {
     private int responseCode = -1;
@@ -60,18 +61,32 @@ public class FunctionalSteps {
     @And("a response of {int} is returned")
     public void aResponseOfIsReturned(int responseCode) {
         assertEquals(responseCode, this.responseCode);
+        this.responseCode = -1;
     }
 
     @And("the customer has no orders")
     public void theCustomerHasNoOrders() {
     }
 
-    @When("restaurant is renamed")
-    public void restaurantIsRenamed() {
+    @When("{word} restaurant is renamed to {word}")
+    public void restaurantIsRenamed(String name, String newName) throws Exception{
+        Restaurant r = this.getRestaurant(name);
+        r.setName(newName);
+        URL url = new URL("http://localhost:8080/api/food/restaurant/id/" + r.getId());
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setDoOutput(true);
+        conn.setRequestMethod("PUT");
+        conn.setRequestProperty("Content-Type", "application/json");
+        OutputStream os = conn.getOutputStream();
+        ObjectMapper mapper = new ObjectMapper();
+        os.write(mapper.writeValueAsString(r).getBytes());
+        os.flush();
+        this.responseCode = conn.getResponseCode();
     }
 
-    @Given("no restaurants exist")
-    public void noRestaurantsExist() {
+    @Given("restaurant {word} does not exist")
+    public void restaurantTestDoesNotExist(String name) throws Exception{
+        assertNull(getRestaurant(name));
     }
 
     private void cancelOrder() throws Exception{
@@ -155,9 +170,17 @@ public class FunctionalSteps {
         return order;
     }
 
-    private String getRestaurantID(String name) throws Exception {
+    private Restaurant getRestaurant(String name) throws Exception {
         List<Restaurant> restaurants = this.getFilteredRestaurants("?name=" + name);
-        return restaurants.get(0).getId();
+        if (!restaurants.isEmpty()){
+            return restaurants.get(0);
+        } else{
+            return null;
+        }
+    }
+
+    private String getRestaurantID(String name) throws Exception {
+        return getRestaurant(name).getId();
     }
 
     private String getCustomerID(String userName) throws Exception {
