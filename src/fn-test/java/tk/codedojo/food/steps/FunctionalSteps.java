@@ -33,13 +33,6 @@ public class FunctionalSteps {
         conn.disconnect();
     }
 
-    @Then("I get a response of {int}")
-    public void iGetAResponseOf(int ok) {
-        if (this.responseCode != ok) {
-            throw new RuntimeException("Failed : HTTP error code : ");
-        }
-    }
-
     @Given("restaurant {word} exists")
     public void aRestaurantExists(String name) throws Exception {
         if (!this.restaurantExists(name)){
@@ -208,21 +201,5 @@ public class FunctionalSteps {
         os.flush();
 
         return conn.getResponseCode();
-    }
-
-    private int getRestaurantCount() throws Exception{
-        URL url = new URL("http://localhost:8080/api/food/restaurant");
-        ObjectMapper mapper = new ObjectMapper();
-        Restaurant[] restaurants = mapper.readValue(url, Restaurant[].class);
-        System.out.println(restaurants[0].toString());
-        return restaurants.length;
-    }
-
-    private int getCustomerCount() throws Exception{
-        URL url = new URL("http://localhost:8080/api/food/customer");
-        ObjectMapper mapper = new ObjectMapper();
-        Customer[] customers = mapper.readValue(url, Customer[].class);
-        System.out.println(customers[0].toString());
-        return customers.length;
     }
 }
