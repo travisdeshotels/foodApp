@@ -33,7 +33,13 @@ public class OrderDaoFake implements OrderDaoType{
     }
 
     public List<Order> getOpenOrdersByCustomerID(String customerID){
-        return null;
+        List<Order> orders = new ArrayList<>();
+        for (Order o : orderMap.values()){
+            if (customerID.equals(o.getCustomerID())){
+                orders.add(o);
+            }
+        }
+        return orders;
     }
 
     public List<Order> getByCustomerID(String customerID){

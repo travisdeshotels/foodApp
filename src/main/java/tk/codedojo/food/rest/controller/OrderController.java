@@ -89,4 +89,11 @@ public class OrderController {
         log.trace("Completed order " + orderID);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @RequestMapping(method=RequestMethod.DELETE, value="id/{id}")
+    public ResponseEntity<String> cancelOrder(@PathVariable("id") String id){
+        Logger log = LoggerFactory.getLogger(OrderController.class.getName());
+        log.warn("Inside cancel order with order id: " + id);
+        return new ResponseEntity<>("Not implemented!", HttpStatus.BAD_REQUEST);
+    }
 }
