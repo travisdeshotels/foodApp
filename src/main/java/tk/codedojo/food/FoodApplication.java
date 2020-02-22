@@ -12,10 +12,13 @@ public class FoodApplication {
 	private static RestaurantDaoFake restaurantDaoFake;
 	@Getter
 	private static CustomerDaoFake customerDaoFake;
+	@Getter
+	private static boolean cancelOrderFeatureEnabled;
 
 	static {
 		restaurantDaoFake = new RestaurantDaoFake();
 		customerDaoFake = new CustomerDaoFake();
+		cancelOrderFeatureEnabled = Boolean.parseBoolean(System.getenv("CANCEL_ORDER"));
 	}
 
 	public static void main(String[] args) {
