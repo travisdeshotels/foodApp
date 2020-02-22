@@ -6,13 +6,13 @@ Feature: Cancelling orders
         Given restaurant test01 exists
         And customer test01 exists
         And customer places an order
-        Then customer cancels their order
+        Then customer test01 cancels their order
         And a response of 200 is returned
 
     @SadPath @skip
     Scenario: Order does not exist
         Given restaurant test01 exists
-        And customer test01 exists
-        And the customer has no orders
-        Then customer cancels their order
+        And customer test02 exists
+        And customer test02 has no orders
+        Then customer test02 cancels their order
         And a response of 400 is returned

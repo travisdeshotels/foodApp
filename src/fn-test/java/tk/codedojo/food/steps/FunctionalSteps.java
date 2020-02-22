@@ -53,9 +53,9 @@ public class FunctionalSteps {
         this.addOrder();
     }
 
-    @Then("customer cancels their order")
-    public void customerCancelsTheirOrder() throws  Exception{
-        this.cancelOrder();
+    @Then("customer {word} cancels their order")
+    public void customerCancelsTheirOrder(String userName) throws  Exception{
+        this.cancelOrder(userName);
     }
 
     @And("a response of {int} is returned")
@@ -64,8 +64,9 @@ public class FunctionalSteps {
         this.responseCode = -1;
     }
 
-    @And("the customer has no orders")
-    public void theCustomerHasNoOrders() {
+    @And("customer {word} has no orders")
+    public void theCustomerHasNoOrders(String userName) throws Exception {
+        assertEquals(0, this.getOrderCount(userName));
     }
 
     @When("{word} restaurant is renamed to {word}")
@@ -89,8 +90,8 @@ public class FunctionalSteps {
         assertNull(getRestaurant(name));
     }
 
-    private void cancelOrder() throws Exception{
-        String orderID = getOrderID();
+    private void cancelOrder(String userName) throws Exception{
+        String orderID = getOrderID(userName);
         URL url = new URL("http://localhost:8080/api/food/order/id/" + orderID);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("DELETE");
@@ -98,16 +99,17 @@ public class FunctionalSteps {
         this.responseCode = conn.getResponseCode();
     }
 
-    private String getOrderID() throws Exception{
+    private String getOrderID(String userName) throws Exception{
         URL url = new URL("http://localhost:8080/api/food/order/customer/" +
-                getCustomerID("test01"));
+                getCustomerID(userName));
         ObjectMapper mapper = new ObjectMapper();
         List<Order> orders = Arrays.asList(mapper.readValue(url, Order[].class));
         if(!orders.isEmpty()){
             System.out.println(orders.get(0).toString());
+            return orders.get(0).getId();
         }
 
-        return orders.get(0).getId();
+        return "-1";
     }
 
     private boolean restaurantExists(String name) throws Exception {
@@ -224,5 +226,14 @@ public class FunctionalSteps {
         os.flush();
 
         return conn.getResponseCode();
+    }
+
+    private int getOrderCount(String userName) throws Exception{
+        URL url = new URL("http://localhost:8080/api/food/order/customer/" +
+                getCustomerID(userName));
+        ObjectMapper mapper = new ObjectMapper();
+        Order[] orders = mapper.readValue(url, Order[].class);
+
+        return orders.length;
     }
 }
