@@ -9,13 +9,10 @@ import org.springframework.http.ResponseEntity;
 import tk.codedojo.food.FoodApplication;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
-import tk.codedojo.food.dao.fake.RestaurantDaoFake;
 import tk.codedojo.food.exception.RestaurantException;
 import tk.codedojo.food.service.RestaurantService;
 import tk.codedojo.food.service.RestaurantServiceImpl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,13 +46,13 @@ public class RestaurantController {
             service.addRestaurant(r);
         } catch (RestaurantException e){
             log.error("RestaurantException", e);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e){
             log.error("", e);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         log.trace("Restaurant added: " + r.toString());
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
