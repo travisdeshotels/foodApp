@@ -14,11 +14,14 @@ public class FoodApplication {
 	private static CustomerDaoFake customerDaoFake;
 	@Getter
 	private static boolean cancelOrderFeatureEnabled;
+	@Getter
+	private static boolean renameRestaurantFeatureEnabled;
 
 	static {
 		restaurantDaoFake = new RestaurantDaoFake();
 		customerDaoFake = new CustomerDaoFake();
 		cancelOrderFeatureEnabled = Boolean.parseBoolean(System.getenv("CANCEL_ORDER"));
+		renameRestaurantFeatureEnabled = Boolean.parseBoolean(System.getenv("RENAME_RESTAURANT"));
 	}
 
 	public static void main(String[] args) {

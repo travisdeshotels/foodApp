@@ -60,18 +60,23 @@ public class RestaurantController {
 
     @RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
     public ResponseEntity<Restaurant> updateMenu(@PathVariable("id") String id, @RequestBody List<MenuItem> menu){
-        Restaurant r;
         Logger log = LoggerFactory.getLogger(RestController.class.getName());
-        try {
-            r = service.updateMenu(id, menu);
-        } catch (RestaurantException e){
-            log.error("RestaurantException", e);
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        } catch (Exception e){
-            log.error("", e);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        if(FoodApplication.isRenameRestaurantFeatureEnabled()){
+            log.warn("Rename Restaurant feature not implemented!");
+        } else {
+            Restaurant r;
+            try {
+                r = service.updateMenu(id, menu);
+            } catch (RestaurantException e) {
+                log.error("RestaurantException", e);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } catch (Exception e) {
+                log.error("", e);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            log.trace("Menu updated for Restaurant: " + r.toString());
+            return new ResponseEntity<>(r, HttpStatus.OK);
         }
-        log.trace("Menu updated for Restaurant: " + r.toString());
-        return new ResponseEntity(r, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
