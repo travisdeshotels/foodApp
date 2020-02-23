@@ -23,6 +23,7 @@ public class OrderServiceImpl implements OrderService {
         this.orderDao = orderDao;
     }
 
+    @Override
     public void completeOrder(String orderID) throws OrderNotFoundException{
         Order order = orderDao.findOne(orderID);
         if (order == null){
@@ -55,6 +56,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getByRestaurantID(String restaurantID) {
         return this.orderDao.getByRestaurantID(restaurantID);
+    }
+
+    @Override
+    public void cancelOrder(String orderID) throws OrderNotFoundException {
+        Order order = orderDao.findOne(orderID);
+        if (order == null){
+            throw new OrderNotFoundException("Cannot complete order, order id invalid!");
+        }
+        order.setCancelled(true);
+        orderDao.save(order);
     }
 
     public void addOrder(Order order) throws InvalidOrderException {

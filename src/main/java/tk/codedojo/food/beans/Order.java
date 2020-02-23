@@ -22,7 +22,15 @@ public class Order {
     private String restaurantID;
 
     private Boolean complete;
+    private Boolean cancelled;
 
     @NonNull
     private List<OrderItem> items;
+
+    public Order(String id, String customerID, String restaurantID, List<OrderItem> items){
+        this.id = id;
+        this.customerID = customerID;
+        this.restaurantID = restaurantID;
+        this.items = items;
+    }
 }

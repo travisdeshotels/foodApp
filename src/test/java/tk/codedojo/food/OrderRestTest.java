@@ -103,7 +103,7 @@ public class OrderRestTest {
         OrderItem orderItem = new OrderItem(new MenuItem("Boudin", 2d), 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", "1", "1", false, orderItems);
+        Order order = new Order("1", "1", "1", orderItems);
         List<Order> orders = new ArrayList<>();
         orders.add(order);
         when(orderService.findAll()).thenReturn(orders);
@@ -117,7 +117,7 @@ public class OrderRestTest {
         OrderItem orderItem = new OrderItem(new MenuItem("Boudin", 2d), 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", "1", "1", false, orderItems);
+        Order order = new Order("1", "1", "1", orderItems);
         List<Order> orders = new ArrayList<>();
         orders.add(order);
         when(orderService.getByCustomerID("1")).thenReturn(orders);
@@ -131,7 +131,7 @@ public class OrderRestTest {
         OrderItem orderItem = new OrderItem(new MenuItem("Boudin", 2d), 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", "1", "1", false, orderItems);
+        Order order = new Order("1", "1", "1", orderItems);
         List<Order> orders = new ArrayList<>();
         orders.add(order);
         when(orderService.getOpenOrdersByCustomerID("1")).thenReturn(orders);
@@ -145,7 +145,7 @@ public class OrderRestTest {
         OrderItem orderItem = new OrderItem(new MenuItem("Boudin", 2d), 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", "1", "1", false, orderItems);
+        Order order = new Order("1", "1", "1", orderItems);
         List<Order> orders = new ArrayList<>();
         orders.add(order);
         when(orderService.getByRestaurantID("1")).thenReturn(orders);
@@ -159,7 +159,7 @@ public class OrderRestTest {
         OrderItem orderItem = new OrderItem(new MenuItem("Boudin", 2d), 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", "1", "1", false, orderItems);
+        Order order = new Order("1", "1", "1", orderItems);
         List<Order> orders = new ArrayList<>();
         orders.add(order);
         when(orderService.getOpenOrdersByRestaurantID("1")).thenReturn(orders);

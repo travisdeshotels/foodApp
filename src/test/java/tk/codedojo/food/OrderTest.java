@@ -73,7 +73,7 @@ public class OrderTest {
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", null, "1", false, orderItems);
+        Order order = new Order("1", null, "1", orderItems);
     }
 
     @Test (expected = NullPointerException.class)
@@ -82,12 +82,12 @@ public class OrderTest {
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", "1", null, false, orderItems);
+        Order order = new Order("1", "1", null, orderItems);
     }
 
     @Test (expected = NullPointerException.class)
     public void testNullItemList(){
-        Order order = new Order("1", "1", "1", false, null);
+        Order order = new Order("1", "1", "1", null);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class OrderTest {
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", "1", "1", false, orderItems);
+        Order order = new Order("1", "1", "1", orderItems);
     }
 
     @Test (expected = InvalidOrderException.class)
@@ -107,7 +107,7 @@ public class OrderTest {
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        orderService.addOrder(new Order("", "1", "1", false, orderItems));
+        orderService.addOrder(new Order("", "1", "1", orderItems));
     }
 
     @Test (expected = InvalidOrderException.class)
@@ -121,7 +121,7 @@ public class OrderTest {
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        orderService.addOrder(new Order("", "1", "1", false, orderItems));
+        orderService.addOrder(new Order("", "1", "1", orderItems));
     }
 
     @Test (expected = InvalidOrderException.class)
@@ -136,7 +136,7 @@ public class OrderTest {
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        orderService.addOrder(new Order("", "1", "1", false, orderItems));
+        orderService.addOrder(new Order("", "1", "1",orderItems));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class OrderTest {
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        orderService.addOrder(new Order("", "1", "1", false, orderItems));
+        orderService.addOrder(new Order("", "1", "1", orderItems));
     }
 
     @Test (expected = OrderNotFoundException.class)
@@ -165,7 +165,7 @@ public class OrderTest {
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", "1", "1", false, orderItems);
+        Order order = new Order("1", "1", "1", orderItems);
         when(orderDao.findOne("1")).thenReturn(order);
         orderService.completeOrder("1");
     }

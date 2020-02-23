@@ -95,8 +95,12 @@ public class OrderController {
         Logger log = LoggerFactory.getLogger(OrderController.class.getName());
         if (FoodApplication.isCancelOrderFeatureEnabled()){
             log.warn("Inside cancel order with order id: " + id);
-            log.warn("Cancel Order feature is enabled.");
-            return new ResponseEntity<>("Not implemented!", HttpStatus.BAD_REQUEST);
+            try {
+                orderService.cancelOrder(id);
+            } catch (OrderNotFoundException e) {
+                return new ResponseEntity<>("Order not found!", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             log.warn("Cancel Order feature is NOT enabled!");
             return new ResponseEntity<>("Not implemented!", HttpStatus.BAD_REQUEST);
