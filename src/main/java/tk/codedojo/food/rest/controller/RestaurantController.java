@@ -55,25 +55,37 @@ public class RestaurantController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
-    public ResponseEntity<Restaurant> updateMenu(@PathVariable("id") String id, @RequestBody List<MenuItem> menu){
-        Logger log = LoggerFactory.getLogger(RestController.class.getName());
+    @RequestMapping(method=RequestMethod.PUT, value="/update/{id}")
+    public ResponseEntity<Restaurant> updateRestaurant(@PathVariable String id, @RequestBody Restaurant r){
+        Logger log = LoggerFactory.getLogger(RestaurantController.class.getName());
         if(FoodApplication.isRenameRestaurantFeatureEnabled()){
-            log.warn("Rename Restaurant feature not implemented!");
-        } else {
-            Restaurant r;
+            log.warn("Rename restaurant is under development");
             try {
-                r = service.updateMenu(id, menu);
+                service.updateRestaurant(r, id);
+                return new ResponseEntity<>(HttpStatus.OK);
             } catch (RestaurantException e) {
-                log.error("RestaurantException", e);
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            } catch (Exception e) {
-                log.error("", e);
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            log.trace("Menu updated for Restaurant: " + r.toString());
-            return new ResponseEntity<>(r, HttpStatus.OK);
         }
+
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
+    public ResponseEntity<Restaurant> updateMenu(@PathVariable("id") String id, @RequestBody List<MenuItem> menu){
+        Logger log = LoggerFactory.getLogger(RestaurantController.class.getName());
+        Restaurant r;
+        try {
+            r = service.updateMenu(id, menu);
+        } catch (RestaurantException e) {
+            log.error("RestaurantException", e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            log.error("", e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        log.trace("Menu updated for Restaurant: " + r.toString());
+
+        return new ResponseEntity<>(r, HttpStatus.OK);
     }
 }

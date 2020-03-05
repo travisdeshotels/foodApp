@@ -12,4 +12,5 @@ public interface RestaurantService {
     List<Restaurant> findAll();
     Restaurant findOne(String id);
     Restaurant findByName(String name);
+    Restaurant updateRestaurant(Restaurant r, String id) throws RestaurantException;
 }

@@ -49,6 +49,17 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    public Restaurant updateRestaurant(Restaurant r, String id) throws RestaurantException {
+        if(dao.findOne(r.getName()) != null){
+            throw new RestaurantException("Restaurant name already exists!");
+        } else {
+            dao.save(r);
+        }
+
+        return r;
+    }
+
+    @Override
     public List<Restaurant> findAll() {
         return dao.findAll();
     }
