@@ -72,7 +72,12 @@ public class FunctionalSteps {
     @When("{word} restaurant is renamed to {word}")
     public void restaurantIsRenamed(String name, String newName) throws Exception{
         Restaurant r = this.getRestaurant(name);
-        r.setName(newName);
+        if (r == null){
+            r = new Restaurant();
+            r.setId("-1");
+        } else{
+            r.setName(newName);
+        }
         URL url = new URL("http://localhost:8080/api/food/restaurant/update/" + r.getId());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
