@@ -58,17 +58,13 @@ public class RestaurantController {
     @RequestMapping(method=RequestMethod.PUT, value="/update/{id}")
     public ResponseEntity<Restaurant> updateRestaurant(@PathVariable String id, @RequestBody Restaurant r){
         Logger log = LoggerFactory.getLogger(RestaurantController.class.getName());
-        if(FoodApplication.isRenameRestaurantFeatureEnabled()){
-            log.warn("Rename restaurant is under development");
-            try {
-                service.updateRestaurant(r, id);
-                return new ResponseEntity<>(HttpStatus.OK);
-            } catch (RestaurantException e) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
+        log.warn("Rename restaurant is under development");
+        try {
+            service.updateRestaurant(r, id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (RestaurantException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
