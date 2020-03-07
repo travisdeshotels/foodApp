@@ -1,7 +1,7 @@
 Feature: Cancelling orders
     Cancel an order when it exists. Assert error when the order does not exist
 
-    @HappyPath @skip
+    @HappyPath
     Scenario: Cancel an existing order
         Given restaurant test01 exists
         And customer test01 exists
@@ -9,7 +9,7 @@ Feature: Cancelling orders
         Then customer test01 cancels their order
         And a response of 200 is returned
 
-    @SadPath @skip
+    @SadPath
     Scenario: Order does not exist
         Given restaurant test01 exists
         And customer test02 exists

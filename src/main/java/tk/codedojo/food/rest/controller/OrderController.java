@@ -93,17 +93,12 @@ public class OrderController {
     @RequestMapping(method=RequestMethod.DELETE, value="id/{id}")
     public ResponseEntity<String> cancelOrder(@PathVariable("id") String id){
         Logger log = LoggerFactory.getLogger(OrderController.class.getName());
-        if (FoodApplication.isCancelOrderFeatureEnabled()){
-            log.warn("Inside cancel order with order id: " + id);
-            try {
-                orderService.cancelOrder(id);
-            } catch (OrderNotFoundException e) {
-                return new ResponseEntity<>("Order not found!", HttpStatus.BAD_REQUEST);
-            }
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            log.warn("Cancel Order feature is NOT enabled!");
-            return new ResponseEntity<>("Not implemented!", HttpStatus.BAD_REQUEST);
+        log.warn("Inside cancel order with order id: " + id);
+        try {
+            orderService.cancelOrder(id);
+        } catch (OrderNotFoundException e) {
+            return new ResponseEntity<>("Order not found!", HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
