@@ -50,54 +50,6 @@ public class OrderRestTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(orderController).build();
     }
 
-    @Ignore
-    @Test
-    public void testyTest() throws IOException {
-        URL url = new URL("https://api.github.com/repos/TheAndroidMaster/MediaNotification/contributors");
-        /*
-        HttpURLConnection conn;
-
-//            URL url = new URL("http://localhost:8081/RESTfulExample/json/product/get");
-        conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Accept", "application/json");
-
-        if (conn.getResponseCode() != 200) {
-            throw new RuntimeException("Failed : HTTP error code : "
-                + conn.getResponseCode());
-        }
-        BufferedReader br = new BufferedReader(new InputStreamReader(
-            (conn.getInputStream())));
-
-        String output = "";
-        String line;
-        System.out.println("Output from Server .... \n");
-        while ((line = br.readLine()) != null) {
-            output += line;
-        }
-        */
-        ObjectMapper mapper = new ObjectMapper();
-        TestBean[] beans = mapper.readValue(url, TestBean[].class);
-        List<TestBean> beanList = Arrays.asList(beans);
-        System.out.println(beanList);
-        /*
-        conn.getContent()
-        Class[] types = {TestBean.class};
-        TestBean bean;
-        bean = (TestBean)conn.getContent(types);
-        BufferedReader br = new BufferedReader(new InputStreamReader(
-            (conn.getInputStream())));
-
-        String output;
-        System.out.println("Output from Server .... \n");
-        while ((output = br.readLine()) != null) {
-            System.out.println(output);
-        }
-
-        conn.disconnect();
-        */
-    }
-
     @Test
     public void testGetOrders() throws Exception {
         OrderItem orderItem = new OrderItem(new MenuItem("Boudin", 2d), 1);
