@@ -95,6 +95,28 @@ public class FunctionalSteps {
         assertNull(getRestaurant(name));
     }
 
+    @Then("customer {word} completes their order")
+    public void customerTestCompletesTheirOrder(String customer) throws Exception {
+        this.completeOrder(customer);
+    }
+
+    @When("{word} menu is updated")
+    public void testMenuIsUpdated(String restaurant) throws Exception {
+        this.updateMenu(restaurant);
+    }
+
+    private void updateMenu(String restaurant) throws Exception {
+        String id = this.getRestaurant(restaurant).getId();
+        List<MenuItem> menu = new ArrayList<>();
+        menu.add(new MenuItem("bean", 1D));
+        menu.add(new MenuItem("slice of bread", 1.5D));
+        menu.add(new MenuItem("pea", 10.1D));
+        menu.add(new MenuItem("sandwich", 1.0D));
+        ObjectMapper mapper = new ObjectMapper();
+        this.responseCode = this.putData("http://localhost:8080/api/food/restaurant/id/" + id,
+                mapper.writeValueAsString(menu));
+    }
+
     private void cancelOrder(String userName) throws Exception{
         String orderID = getOrderID(userName);
         URL url = new URL("http://localhost:8080/api/food/order/id/" + orderID);
@@ -102,6 +124,12 @@ public class FunctionalSteps {
         conn.setRequestMethod("DELETE");
         conn.setRequestProperty("Content-Type", "application/json");
         this.responseCode = conn.getResponseCode();
+    }
+
+    private void completeOrder(String userName) throws Exception{
+        String orderID = getOrderID(userName);
+        String url = "http://localhost:8080/api/food/order/id/" + orderID;
+        this.responseCode = this.putData(url, "");
     }
 
     private String getOrderID(String userName) throws Exception{
@@ -131,7 +159,7 @@ public class FunctionalSteps {
         r.setName(name);
         r.setAddress("my street");
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem("sandwich", 1D));
+        menuItems.add(new MenuItem("sandwich", 1.0D));
         r.setMenuItems(menuItems);
         ObjectMapper mapper = new ObjectMapper();
         int responseCode = this.postData(url, mapper.writeValueAsString(r));
@@ -225,6 +253,18 @@ public class FunctionalSteps {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        OutputStream os = conn.getOutputStream();
+        os.write(data.getBytes());
+        os.flush();
+
+        return conn.getResponseCode();
+    }
+
+    private int putData(String url, String data) throws Exception {
+        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+        conn.setDoOutput(true);
+        conn.setRequestMethod("PUT");
         conn.setRequestProperty("Content-Type", "application/json");
         OutputStream os = conn.getOutputStream();
         os.write(data.getBytes());
