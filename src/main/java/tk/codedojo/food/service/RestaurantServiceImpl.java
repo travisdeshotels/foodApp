@@ -4,17 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
-import tk.codedojo.food.dao.RestaurantDaoType;
-import tk.codedojo.food.dao.fake.RestaurantDaoFake;
+import tk.codedojo.food.dao.mongo.RestaurantDaoMongo;
 import tk.codedojo.food.exception.*;
 
 import java.util.List;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
-    private RestaurantDaoType dao;
+    private RestaurantDaoMongo dao;
 
-    public RestaurantServiceImpl(RestaurantDaoType dao){
+    @Autowired
+    public RestaurantServiceImpl(RestaurantDaoMongo dao){
         this.dao = dao;
     }
 

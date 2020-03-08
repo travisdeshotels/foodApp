@@ -12,6 +12,9 @@ import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.dao.*;
 import tk.codedojo.food.dao.fake.OrderDaoFake;
 import tk.codedojo.food.dao.fake.RestaurantDaoFake;
+import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
+import tk.codedojo.food.dao.mongo.OrderDaoMongo;
+import tk.codedojo.food.dao.mongo.RestaurantDaoMongo;
 import tk.codedojo.food.exception.InvalidOrderException;
 import tk.codedojo.food.exception.OrderNotFoundException;
 import tk.codedojo.food.service.OrderServiceImpl;
@@ -26,11 +29,11 @@ import static org.mockito.Mockito.when;
 public class OrderTest {
 
     @Mock
-    private CustomerDaoType customerDao;
+    private CustomerDaoMongo customerDao;
     @Mock
-    private RestaurantDaoType restaurantDao;
+    private RestaurantDaoMongo restaurantDao;
     @Mock
-    private OrderDaoType orderDao;
+    private OrderDaoMongo orderDao;
 
     private OrderServiceImpl orderService;
 

@@ -1,8 +1,9 @@
 package tk.codedojo.food.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.Customer;
-import tk.codedojo.food.dao.CustomerDaoType;
+import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
 import tk.codedojo.food.exception.CustomerException;
 import tk.codedojo.food.exception.UserNameException;
 
@@ -11,11 +12,11 @@ import java.util.List;
 @Service
 public class CustomerServiceImpl implements CustomerService{
     private static final int MIN_USERNAME_LENGTH = 3;
+    private CustomerDaoMongo dao;
 
-    private CustomerDaoType dao;
-
-    public CustomerServiceImpl(CustomerDaoType daoType){
-        this.dao = daoType;
+    @Autowired
+    public CustomerServiceImpl(CustomerDaoMongo wrap){
+        this.dao = wrap;
     }
 
     public boolean usernameInUse(String username){

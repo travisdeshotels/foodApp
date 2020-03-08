@@ -7,15 +7,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tk.codedojo.food.FoodApplication;
 import tk.codedojo.food.beans.Order;
-import tk.codedojo.food.dao.fake.CustomerDaoFake;
-import tk.codedojo.food.dao.fake.OrderDaoFake;
-import tk.codedojo.food.dao.fake.RestaurantDaoFake;
 import tk.codedojo.food.exception.InvalidOrderException;
 import tk.codedojo.food.exception.OrderNotFoundException;
 import tk.codedojo.food.service.OrderService;
-import tk.codedojo.food.service.OrderServiceImpl;
 
 import java.util.List;
 
@@ -26,11 +21,9 @@ import static tk.codedojo.food.beans.FoodConstants.API_URL;
 public class OrderController {
     private OrderService orderService;
 
-    public OrderController(){
-        this.orderService = new OrderServiceImpl(
-                FoodApplication.getCustomerDaoFake(),
-                FoodApplication.getRestaurantDaoFake(),
-                new OrderDaoFake());
+    @Autowired
+    public OrderController(OrderService service){
+        this.orderService = service;
     }
 
     @RequestMapping(method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)

@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import tk.codedojo.food.beans.Customer;
 import tk.codedojo.food.dao.CustomerDaoType;
+import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
 import tk.codedojo.food.exception.CustomerException;
 import tk.codedojo.food.exception.UserNameException;
 import tk.codedojo.food.service.CustomerServiceImpl;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerTest {
     @Mock
-    private CustomerDaoType customerDao;
+    private CustomerDaoMongo customerDao;
     @InjectMocks
     private CustomerServiceImpl customerService;
 
