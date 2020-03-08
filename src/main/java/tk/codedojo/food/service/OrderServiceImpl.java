@@ -1,5 +1,7 @@
 package tk.codedojo.food.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.*;
@@ -103,11 +105,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private boolean itemIsOnMenu(String item, List<MenuItem> menuItems){
+        boolean onMenu = false;
         for(MenuItem menuItem : menuItems){
-            if(!item.equals(menuItem.getFoodItem())){
-                return false;
+            if (item.equals(menuItem.getFoodItem())) {
+                onMenu = true;
+                break;
             }
         }
-        return true;
+        return onMenu;
     }
 }
