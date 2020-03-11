@@ -1,17 +1,12 @@
 package tk.codedojo.food;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import tk.codedojo.food.beans.*;
 import tk.codedojo.food.beans.MenuItem;
-import tk.codedojo.food.dao.*;
-import tk.codedojo.food.dao.fake.OrderDaoFake;
-import tk.codedojo.food.dao.fake.RestaurantDaoFake;
 import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
 import tk.codedojo.food.dao.mongo.OrderDaoMongo;
 import tk.codedojo.food.dao.mongo.RestaurantDaoMongo;
@@ -34,7 +29,6 @@ public class OrderTest {
     private RestaurantDaoMongo restaurantDao;
     @Mock
     private OrderDaoMongo orderDao;
-
     private OrderServiceImpl orderService;
 
     @Before
@@ -76,7 +70,7 @@ public class OrderTest {
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", null, "1", orderItems);
+        Order order = new Order("1", null, "1", OrderStatus.OPEN, orderItems);
     }
 
     @Test (expected = NullPointerException.class)
@@ -85,12 +79,12 @@ public class OrderTest {
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", "1", null, orderItems);
+        Order order = new Order("1", "1", null, OrderStatus.OPEN, orderItems);
     }
 
     @Test (expected = NullPointerException.class)
     public void testNullItemList(){
-        Order order = new Order("1", "1", "1", null);
+        Order order = new Order("1", "1", "1", OrderStatus.OPEN, null);
     }
 
     @Test

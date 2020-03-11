@@ -12,9 +12,9 @@ public interface OrderDaoMongo extends MongoRepository<Order, String>{
     List<Order> getByRestaurantID(String id);
     List<Order> getByCustomerID(String id);
 
-    @Query("{$and: [{customerID: ?0 }, {complete: false}]}")
+    @Query("{$and: [{customerID: ?0 }, {status: 'OPEN'}]}")
     List<Order> getOpenOrdersByCustomerID(String customerID);
 
-    @Query("{$and: [{restaurantID: ?0 }, {complete: false}]}")
+    @Query("{$and: [{restaurantID: ?0 }, {status: 'OPEN'}]}")
     List<Order> getOpenOrdersByRestaurantID(String customerID);
 }

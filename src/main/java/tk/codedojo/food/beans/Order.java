@@ -20,9 +20,7 @@ public class Order {
     private String customerID;
     @NonNull
     private String restaurantID;
-
-    private Boolean complete;
-    private Boolean cancelled;
+    private OrderStatus status = OrderStatus.OPEN;
 
     @NonNull
     private List<OrderItem> items;

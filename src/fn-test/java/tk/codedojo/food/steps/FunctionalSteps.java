@@ -141,7 +141,7 @@ public class FunctionalSteps {
             System.out.println(orders.get(0).toString());
             return orders.get(0).getId();
         }
-
+        System.out.println("Cannot find order for customer: " + userName);
         return "-1";
     }
 
@@ -198,7 +198,6 @@ public class FunctionalSteps {
         Order order = new Order();
         order.setCustomerID(this.getCustomerID("test01"));
         order.setRestaurantID(this.getRestaurantID("test01"));
-        order.setComplete(false);
         OrderItem orderItem = new OrderItem(new MenuItem("sandwich", 1.0D), 1);
         order.setItems(Collections.singletonList(orderItem));
 

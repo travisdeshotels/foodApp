@@ -1,7 +1,5 @@
 package tk.codedojo.food.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.*;
@@ -31,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
         if (order == null){
             throw new OrderNotFoundException("Cannot complete order, order id invalid!");
         }
-        order.setComplete(true);
+        order.setStatus(OrderStatus.COMPLETE);
         orderDao.save(order);
     }
 
@@ -64,15 +62,14 @@ public class OrderServiceImpl implements OrderService {
     public void cancelOrder(String orderID) throws OrderNotFoundException {
         Order order = orderDao.findOne(orderID);
         if (order == null){
-            throw new OrderNotFoundException("Cannot complete order, order id invalid!");
+            throw new OrderNotFoundException("Cannot cancel order, order id invalid!");
         }
-        order.setCancelled(true);
+        order.setStatus(OrderStatus.CANCELLED);
         orderDao.save(order);
     }
 
     public void addOrder(Order order) throws InvalidOrderException {
         validateOrder(order);
-        order.setComplete(false);
         orderDao.save(order);
     }
 

@@ -1,8 +1,6 @@
 package tk.codedojo.food;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,10 +18,7 @@ import tk.codedojo.food.exception.OrderNotFoundException;
 import tk.codedojo.food.rest.controller.OrderController;
 import tk.codedojo.food.service.OrderService;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
@@ -60,7 +55,7 @@ public class OrderRestTest {
         orders.add(order);
         when(orderService.findAll()).thenReturn(orders);
         MvcResult mvcResult = this.mockMvc.perform(get("/api/food/order")).andReturn();
-        String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"complete\":false,\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
+        String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"status\":\"OPEN\",\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
         JSONAssert.assertEquals(expected, mvcResult.getResponse().getContentAsString(), false);
     }
 
@@ -74,7 +69,7 @@ public class OrderRestTest {
         orders.add(order);
         when(orderService.getByCustomerID("1")).thenReturn(orders);
         MvcResult mvcResult = this.mockMvc.perform(get("/api/food/order/customer/all/{id}", "1")).andReturn();
-        String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"complete\":false,\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
+        String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"status\":\"OPEN\",\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
         JSONAssert.assertEquals(expected, mvcResult.getResponse().getContentAsString(), false);
     }
 
@@ -88,7 +83,7 @@ public class OrderRestTest {
         orders.add(order);
         when(orderService.getOpenOrdersByCustomerID("1")).thenReturn(orders);
         MvcResult mvcResult = this.mockMvc.perform(get("/api/food/order/customer/{id}", "1")).andReturn();
-        String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"complete\":false,\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
+        String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"status\":\"OPEN\",\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
         JSONAssert.assertEquals(expected, mvcResult.getResponse().getContentAsString(), false);
     }
 
@@ -102,7 +97,7 @@ public class OrderRestTest {
         orders.add(order);
         when(orderService.getByRestaurantID("1")).thenReturn(orders);
         MvcResult mvcResult = this.mockMvc.perform(get("/api/food/order/restaurant/all/{id}", "1")).andReturn();
-        String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"complete\":false,\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
+        String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"status\":\"OPEN\",\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
         JSONAssert.assertEquals(expected, mvcResult.getResponse().getContentAsString(), false);
     }
 
@@ -116,7 +111,7 @@ public class OrderRestTest {
         orders.add(order);
         when(orderService.getOpenOrdersByRestaurantID("1")).thenReturn(orders);
         MvcResult mvcResult = this.mockMvc.perform(get("/api/food/order/restaurant/{id}", "1")).andReturn();
-        String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"complete\":false,\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
+        String expected = "[{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"status\":\"OPEN\",\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}]";
         JSONAssert.assertEquals(expected, mvcResult.getResponse().getContentAsString(), false);
     }
 
@@ -125,8 +120,8 @@ public class OrderRestTest {
         MvcResult mvcResult = this.mockMvc.perform(post(
                 "/api/food/order")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"complete\":false,\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}")).andReturn();
-        assertEquals(mvcResult.getResponse().getStatus(), 201);
+                .content("{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"status\":\"OPEN\",\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}")).andReturn();
+        assertEquals(201, mvcResult.getResponse().getStatus());
     }
 
     @Test
@@ -135,8 +130,8 @@ public class OrderRestTest {
         MvcResult mvcResult = this.mockMvc.perform(post(
                 "/api/food/order")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"complete\":false,\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}")).andReturn();
-        assertEquals(mvcResult.getResponse().getStatus(), 400);
+                .content("{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"status\":\"OPEN\",\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}")).andReturn();
+        assertEquals(400, mvcResult.getResponse().getStatus());
     }
 
     @Test
@@ -145,7 +140,7 @@ public class OrderRestTest {
         MvcResult mvcResult = this.mockMvc.perform(post(
                 "/api/food/order")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"complete\":false,\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}")).andReturn();
+                .content("{\"id\":\"1\",\"customerID\":\"1\",\"restaurantID\":\"1\",\"status\":\"OPEN\",\"items\":[{\"menuItem\":{\"foodItem\":\"Boudin\",\"price\":2.0},\"quantity\":1}]}")).andReturn();
         assertEquals(mvcResult.getResponse().getStatus(), 400);
     }
 
