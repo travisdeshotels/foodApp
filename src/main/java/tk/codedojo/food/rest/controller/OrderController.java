@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tk.codedojo.food.beans.Order;
 import tk.codedojo.food.exception.InvalidOrderException;
+import tk.codedojo.food.exception.OrderException;
 import tk.codedojo.food.exception.OrderNotFoundException;
 import tk.codedojo.food.service.OrderService;
 
@@ -54,17 +55,18 @@ public class OrderController {
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<String> addOrder(@RequestBody Order order){
         Logger log = LoggerFactory.getLogger(OrderController.class.getName());
+        Order orderWithId;
         try {
-            orderService.addOrder(order);
+            orderWithId = orderService.addOrder(order);
         } catch(InvalidOrderException e){
                 log.error("InvalidOrderException", e);
-                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch(Exception e){
             log.error("", e);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         log.trace("Order added: " + order.toString());
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(orderWithId.getId(), HttpStatus.CREATED);
     }
 
     @RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
@@ -74,13 +76,13 @@ public class OrderController {
             orderService.completeOrder(orderID);
         } catch(OrderNotFoundException e){
             log.error("OrderNotFoundException", e);
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e){
             log.error("", e);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         log.trace("Completed order " + orderID);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(method=RequestMethod.DELETE, value="id/{id}")
@@ -88,7 +90,7 @@ public class OrderController {
         Logger log = LoggerFactory.getLogger(OrderController.class.getName());
         try {
             orderService.cancelOrder(id);
-        } catch (OrderNotFoundException e) {
+        } catch (OrderException e) {
             log.error(e.getMessage(), e);
             return new ResponseEntity<>("Order not found!", HttpStatus.BAD_REQUEST);
         }

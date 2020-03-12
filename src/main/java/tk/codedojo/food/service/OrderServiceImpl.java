@@ -1,5 +1,7 @@
 package tk.codedojo.food.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.*;
@@ -59,18 +61,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void cancelOrder(String orderID) throws OrderNotFoundException {
+    public void cancelOrder(String orderID) throws OrderException {
         Order order = orderDao.findOne(orderID);
         if (order == null){
-            throw new OrderNotFoundException("Cannot cancel order, order id invalid!");
+            throw new OrderException("Cannot cancel order, order id invalid!");
+        } else if (OrderStatus.COMPLETE.equals(order.getStatus())){
+            throw new OrderException("Cannot cancel an order that has been completed!");
         }
-        order.setStatus(OrderStatus.CANCELLED);
-        orderDao.save(order);
+        if (!OrderStatus.CANCELLED.equals(order.getStatus())) {
+            order.setStatus(OrderStatus.CANCELLED);
+            orderDao.save(order);
+        }
     }
 
-    public void addOrder(Order order) throws InvalidOrderException {
+    public Order addOrder(Order order) throws InvalidOrderException {
         validateOrder(order);
         orderDao.save(order);
+        return order;
     }
 
     private void validateOrder(Order order) throws InvalidOrderException {

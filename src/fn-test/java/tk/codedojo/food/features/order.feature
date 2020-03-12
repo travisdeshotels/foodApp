@@ -4,7 +4,7 @@ Feature: Orders
     Scenario: Cancel an existing order
         Given restaurant test01 exists
         And customer test01 exists
-        And customer places an order
+        And customer test01 places an order
         Then customer test01 cancels their order
         And a response of 200 is returned
 
@@ -16,11 +16,20 @@ Feature: Orders
         Then customer test02 cancels their order
         And a response of 400 is returned
 
+    @SadPath
+    Scenario: Cancel order that has been completed
+        Given restaurant test01 exists
+        And customer test5 exists
+        When customer test5 places an order
+        And customer test5 completes their order
+        Then customer test5 cancels their order
+        And a response of 400 is returned
+
     @HappyPath
     Scenario: Complete an existing order
         Given restaurant test01 exists
         And customer test01 exists
-        And customer places an order
+        And customer test01 places an order
         Then customer test01 completes their order
         And a response of 200 is returned
 

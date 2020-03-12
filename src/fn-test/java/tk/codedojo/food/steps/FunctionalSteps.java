@@ -1,12 +1,16 @@
 package tk.codedojo.food.steps;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import tk.codedojo.food.beans.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -18,6 +22,17 @@ import static org.junit.Assert.assertNull;
 
 public class FunctionalSteps {
     private int responseCode = -1;
+    private String orderId;
+
+    @Before
+    public void setup(){
+        orderId = "-1";
+    }
+
+    @After
+    public void cleanup(){
+        orderId = "-1";
+    }
 
     @Given("the application is running")
     public void theApplicationIsRunning() {
@@ -48,9 +63,9 @@ public class FunctionalSteps {
         }
     }
 
-    @And("customer places an order")
-    public void customerPlacesAnOrder() throws Exception {
-        this.addOrder();
+    @And("customer {word} places an order")
+    public void customerPlacesAnOrder(String userName) throws Exception {
+        this.addOrder(userName);
     }
 
     @Then("customer {word} cancels their order")
@@ -118,7 +133,7 @@ public class FunctionalSteps {
     }
 
     private void cancelOrder(String userName) throws Exception{
-        String orderID = getOrderID(userName);
+        String orderID = this.orderId;
         URL url = new URL("http://localhost:8080/api/food/order/id/" + orderID);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("DELETE");
@@ -127,22 +142,9 @@ public class FunctionalSteps {
     }
 
     private void completeOrder(String userName) throws Exception{
-        String orderID = getOrderID(userName);
+        String orderID = this.orderId;
         String url = "http://localhost:8080/api/food/order/id/" + orderID;
         this.responseCode = this.putData(url, "");
-    }
-
-    private String getOrderID(String userName) throws Exception{
-        URL url = new URL("http://localhost:8080/api/food/order/customer/" +
-                getCustomerID(userName));
-        ObjectMapper mapper = new ObjectMapper();
-        List<Order> orders = Arrays.asList(mapper.readValue(url, Order[].class));
-        if(!orders.isEmpty()){
-            System.out.println(orders.get(0).toString());
-            return orders.get(0).getId();
-        }
-        System.out.println("Cannot find order for customer: " + userName);
-        return "-1";
     }
 
     private boolean restaurantExists(String name) throws Exception {
@@ -182,21 +184,21 @@ public class FunctionalSteps {
         }
     }
 
-    private void addOrder() throws Exception{
-        Order order = setOrderData();
+    private void addOrder(String userName) throws Exception{
+        Order order = setOrderData(userName);
         URL url = new URL("http://localhost:8080/api/food/order");
         ObjectMapper mapper = new ObjectMapper();
         System.out.println(mapper.writeValueAsString(order));
-        int responseCode = this.postData(url, mapper.writeValueAsString(order));
+        int responseCode = this.postData(url, mapper.writeValueAsString(order), true);
 
         if (responseCode != HttpURLConnection.HTTP_CREATED) {
             throw new RuntimeException("Failed : HTTP error code : " + responseCode);
         }
     }
 
-    private Order setOrderData() throws Exception {
+    private Order setOrderData(String userName) throws Exception {
         Order order = new Order();
-        order.setCustomerID(this.getCustomerID("test01"));
+        order.setCustomerID(this.getCustomerID(userName));
         order.setRestaurantID(this.getRestaurantID("test01"));
         OrderItem orderItem = new OrderItem(new MenuItem("sandwich", 1.0D), 1);
         order.setItems(Collections.singletonList(orderItem));
@@ -248,7 +250,11 @@ public class FunctionalSteps {
         return customersWithoutNulls;
     }
 
-    private int postData(URL url, String data) throws Exception{
+    private int postData(URL url, String data) throws Exception {
+        return postData(url, data, false);
+    }
+
+    private int postData(URL url, String data, boolean isPlacingOrder) throws Exception{
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
@@ -256,6 +262,10 @@ public class FunctionalSteps {
         OutputStream os = conn.getOutputStream();
         os.write(data.getBytes());
         os.flush();
+        if(isPlacingOrder) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            this.orderId = reader.readLine();
+        }
 
         return conn.getResponseCode();
     }
