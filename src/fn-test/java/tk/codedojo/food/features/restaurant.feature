@@ -6,6 +6,12 @@ Feature: Restaurants
         When test01 menu is updated
         Then a response of 200 is returned
 
+    @SadPath
+    Scenario: Menu is empty
+        Given restaurant test01 exists
+        When test01 menu is updated without a menu
+        Then a response of 404 is returned
+
     @HappyPath
     Scenario: Rename a restaurant
         Given restaurant test01 exists

@@ -94,6 +94,11 @@ public class FunctionalSteps {
 
     @When("{word} menu is updated")
     public void testMenuIsUpdated(String restaurant) throws Exception {
-        impl.updateMenu(restaurant);
+        impl.updateMenu(restaurant, false);
+    }
+
+    @When("{word} menu is updated without a menu")
+    public void testMenuIsUpdatedWithoutAMenu(String restaurant) throws Exception {
+        impl.updateMenu(restaurant, true);
     }
 }

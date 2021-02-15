@@ -2,6 +2,7 @@ package tk.codedojo.food.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
 import tk.codedojo.food.dao.mongo.RestaurantDaoMongo;
@@ -33,7 +34,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         if(r == null){
            throw new RestaurantException("Cannot update menu, restaurant id not valid!");
         }
-        if(menu == null){
+        if(CollectionUtils.isEmpty(menu)){
             throw new RestaurantException("Cannot perform update, menu is empty!");
         }
         for (MenuItem item : menu){

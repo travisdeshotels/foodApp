@@ -19,13 +19,15 @@ public class FunctionalImpl {
     @Getter @Setter
     private String orderId;
 
-    public void updateMenu(String restaurant) throws Exception {
+    public void updateMenu(String restaurant, boolean isEmpty) throws Exception {
         String id = this.getRestaurant(restaurant).getId();
         List<MenuItem> menu = new ArrayList<>();
-        menu.add(new MenuItem("bean", 1D));
-        menu.add(new MenuItem("slice of bread", 1.5D));
-        menu.add(new MenuItem("pea", 10.1D));
-        menu.add(new MenuItem("sandwich", 1.0D));
+        if (!isEmpty) {
+            menu.add(new MenuItem("bean", 1D));
+            menu.add(new MenuItem("slice of bread", 1.5D));
+            menu.add(new MenuItem("pea", 10.1D));
+            menu.add(new MenuItem("sandwich", 1.0D));
+        }
         ObjectMapper mapper = new ObjectMapper();
         this.responseCode = this.putData("http://localhost:8080/api/food/restaurant/id/" + id,
                 mapper.writeValueAsString(menu));
