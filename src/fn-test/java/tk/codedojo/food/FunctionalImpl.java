@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class FunctionalImpl {
@@ -63,6 +64,11 @@ public class FunctionalImpl {
         r.setAddress("my street");
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(new MenuItem("sandwich", 1.0D));
+        if (name.equals("test01")) {
+            menuItems.add(new MenuItem("bean", 1D));
+            menuItems.add(new MenuItem("slice of bread", 1.5D));
+            menuItems.add(new MenuItem("pea", 10.1D));
+        }
         r.setMenuItems(menuItems);
         ObjectMapper mapper = new ObjectMapper();
         int responseCode = this.postData(url, mapper.writeValueAsString(r));
@@ -117,12 +123,32 @@ public class FunctionalImpl {
         this.setResponseCode(conn.getResponseCode());
     }
 
+    public void customOrder(int quantity, String item, Double price) throws Exception {
+        Order order = setOrderData("test01", Collections.singletonList(
+                new OrderItem(new MenuItem(item, price), quantity)
+        ));
+        URL url = new URL("http://localhost:8080/api/food/order");
+        ObjectMapper mapper = new ObjectMapper();
+        System.out.println(mapper.writeValueAsString(order));
+        int responseCode = this.postData(url, mapper.writeValueAsString(order), true);
+
+        if (responseCode != HttpURLConnection.HTTP_CREATED) {
+            throw new RuntimeException("Failed : HTTP error code : " + responseCode);
+        }
+        this.setResponseCode(responseCode);
+    }
+
     private Order setOrderData(String userName) throws Exception {
+        return setOrderData(userName, Collections.singletonList(
+                new OrderItem(new MenuItem("sandwich", 1.0D), 1))
+        );
+    }
+
+    private Order setOrderData(String userName, List<OrderItem> items) throws Exception {
         Order order = new Order();
         order.setCustomerID(this.getCustomerID(userName));
         order.setRestaurantID(this.getRestaurantID("test01"));
-        OrderItem orderItem = new OrderItem(new MenuItem("sandwich", 1.0D), 1);
-        order.setItems(Collections.singletonList(orderItem));
+        order.setItems(items);
 
         return order;
     }

@@ -101,4 +101,9 @@ public class FunctionalSteps {
     public void testMenuIsUpdatedWithoutAMenu(String restaurant) throws Exception {
         impl.updateMenu(restaurant, true);
     }
+
+    @And("customer {word} orders {int} of {string} at {string}")
+    public void customerTestOrdersItem(String name, int quantity, String item, String price) throws Exception {
+        impl.customOrder(quantity, item, Double.valueOf(price));
+    }
 }
