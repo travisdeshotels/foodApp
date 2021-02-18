@@ -1,4 +1,4 @@
-package tk.codedojo.food;
+package tk.codedojo.food.fntest;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
@@ -8,8 +8,8 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
     plugin = {"pretty", "summary"},
     strict = true,
-    features = "src/fn-test/java/tk/codedojo/food/features",
+    features = "src/test/java/tk/codedojo/food/fntest/features",
     glue = "tk.codedojo.food.steps",
-    tags = "not @skip")
+    tags = "not @functional")
 public class RunCucumberTest{
 }

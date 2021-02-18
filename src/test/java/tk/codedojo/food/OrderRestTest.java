@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -117,6 +116,9 @@ public class OrderRestTest {
 
     @Test
     public void testAddOrder() throws Exception {
+        Order order = new Order();
+        order.setId("2");
+        doReturn(order).when(orderService).addOrder(any());
         MvcResult mvcResult = this.mockMvc.perform(post(
                 "/api/food/order")
                 .contentType(MediaType.APPLICATION_JSON)

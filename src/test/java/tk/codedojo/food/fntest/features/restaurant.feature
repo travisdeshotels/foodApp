@@ -1,3 +1,4 @@
+@functional
 Feature: Restaurants
 
     @HappyPath
