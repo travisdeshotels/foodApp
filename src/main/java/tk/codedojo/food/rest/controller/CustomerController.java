@@ -46,13 +46,13 @@ public class CustomerController {
             service.addCustomer(c);
         } catch (UserNameException e){
             log.error("UserNameException", e);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e){
             log.error("", e);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         log.trace("Customer added: " + c.toString());
-        return new ResponseEntity(c, HttpStatus.CREATED);
+        return new ResponseEntity<>(c, HttpStatus.CREATED);
     }
 
     @RequestMapping(method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -62,9 +62,9 @@ public class CustomerController {
             service.updateCustomer(c);
         } catch (CustomerException e){
             log.error("CustomerException", e);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         log.trace("Customer updated: " + c.toString());
-        return new ResponseEntity(c, HttpStatus.OK);
+        return new ResponseEntity<>(c, HttpStatus.OK);
     }
 }
