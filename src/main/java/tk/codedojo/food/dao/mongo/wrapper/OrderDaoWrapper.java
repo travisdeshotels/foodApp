@@ -19,7 +19,7 @@ public class OrderDaoWrapper implements OrderDaoType {
 
     @Override
     public Order findOne(String id) {
-        return this.dao.findOne(id);
+        return this.dao.findById(id).isPresent() ? this.dao.findById(id).get() : null;
     }
 
     @Override

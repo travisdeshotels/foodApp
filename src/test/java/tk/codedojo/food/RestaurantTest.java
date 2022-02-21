@@ -1,19 +1,18 @@
 package tk.codedojo.food;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
-import tk.codedojo.food.dao.fake.RestaurantDaoFake;
 import tk.codedojo.food.dao.mongo.RestaurantDaoMongo;
 import tk.codedojo.food.exception.RestaurantException;
 import tk.codedojo.food.service.RestaurantServiceImpl;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -61,13 +60,14 @@ public class RestaurantTest {
 
     @Test (expected = RestaurantException.class)
     public void testNullRestaurantUpdate() throws RestaurantException {
-        when(restaurantDao.findOne("6")).thenReturn(null);
-        restaurantService.updateMenu("6", new ArrayList<MenuItem>());
+        when(restaurantDao.findById("6")).thenReturn(Optional.empty());
+        restaurantService.updateMenu("6", new ArrayList<>());
     }
 
     @Test (expected = RestaurantException.class)
     public void testNullMenuUpdate() throws RestaurantException {
-        when(restaurantDao.findOne("7")).thenReturn(new Restaurant("7", "moe's", "234 street", new ArrayList<MenuItem>()));
+        when(restaurantDao.findById("7")).thenReturn(Optional.of(
+                new Restaurant("7", "moe's", "234 street", new ArrayList<>())));
         restaurantService.updateMenu("7", null);
     }
 
@@ -76,7 +76,8 @@ public class RestaurantTest {
         ArrayList<MenuItem> items = new ArrayList<>();
         MenuItem item = new MenuItem("fooditem",-1d);
         items.add(item);
-        when(restaurantDao.findOne("8")).thenReturn(new Restaurant("8", "moe's", "234 street", null));
+        when(restaurantDao.findById("8")).thenReturn(Optional.of(
+                new Restaurant("8", "moe's", "234 street", null)));
         restaurantService.updateMenu("8", items);
     }
 
@@ -85,7 +86,8 @@ public class RestaurantTest {
         ArrayList<MenuItem> items = new ArrayList<>();
         MenuItem item = new MenuItem("",1d);
         items.add(item);
-        when(restaurantDao.findOne("9")).thenReturn(new Restaurant("9", "moe's", "234 street", null));
+        when(restaurantDao.findById("9")).thenReturn(Optional.of(
+                new Restaurant("9", "moe's", "234 street", null)));
         restaurantService.updateMenu("9", items);
     }
 
@@ -94,7 +96,8 @@ public class RestaurantTest {
         ArrayList<MenuItem> items = new ArrayList<>();
         MenuItem item = new MenuItem("foditem",1d);
         items.add(item);
-        when(restaurantDao.findOne("10")).thenReturn(new Restaurant("10", "moe's", "234 street", null));
+        when(restaurantDao.findById("10")).thenReturn(Optional.of(
+                new Restaurant("10", "moe's", "234 street", null)));
         restaurantService.updateMenu("10", items);
     }
 }

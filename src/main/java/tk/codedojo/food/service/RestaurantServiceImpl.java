@@ -29,8 +29,8 @@ public class RestaurantServiceImpl implements RestaurantService {
         }
     }
 
-    public Restaurant updateMenu(String restaurantID, List<MenuItem> menu) throws RestaurantException{
-        Restaurant r = dao.findOne(restaurantID);
+    public Restaurant updateMenu(String id, List<MenuItem> menu) throws RestaurantException{
+        Restaurant r = dao.findById(id).isPresent() ? dao.findById(id).get() : null;
         if(r == null){
            throw new RestaurantException("Cannot update menu, restaurant id not valid!");
         }
@@ -67,7 +67,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public Restaurant findOne(String id) {
-        return dao.findOne(id);
+        return dao.findById(id).isPresent() ? dao.findById(id).get() : null;
     }
 
     @Override

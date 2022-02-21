@@ -21,6 +21,7 @@ import static tk.codedojo.food.beans.FoodConstants.API_URL;
 @RequestMapping(API_URL + "/order")
 public class OrderController {
     private OrderService orderService;
+    private final Logger log = LoggerFactory.getLogger(OrderController.class.getName());
 
     @Autowired
     public OrderController(OrderService service){
@@ -54,7 +55,6 @@ public class OrderController {
 
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<String> addOrder(@RequestBody Order order){
-        Logger log = LoggerFactory.getLogger(OrderController.class.getName());
         Order orderWithId;
         try {
             orderWithId = orderService.addOrder(order);
@@ -71,7 +71,6 @@ public class OrderController {
 
     @RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
     public ResponseEntity<String> completeOrder(@PathVariable("id") String orderID){
-        Logger log = LoggerFactory.getLogger(OrderController.class.getName());
         try {
             orderService.completeOrder(orderID);
         } catch(OrderNotFoundException e){
@@ -87,7 +86,6 @@ public class OrderController {
 
     @RequestMapping(method=RequestMethod.DELETE, value="id/{id}")
     public ResponseEntity<String> cancelOrder(@PathVariable("id") String id){
-        Logger log = LoggerFactory.getLogger(OrderController.class.getName());
         try {
             orderService.cancelOrder(id);
         } catch (OrderException e) {

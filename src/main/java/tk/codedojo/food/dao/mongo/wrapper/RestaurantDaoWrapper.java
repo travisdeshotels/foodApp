@@ -24,7 +24,7 @@ public class RestaurantDaoWrapper implements RestaurantDaoType {
 
     @Override
     public Restaurant findOne(String id) {
-        return this.dao.findOne(id);
+        return this.dao.findById(id).isPresent() ? this.dao.findById(id).get() : null;
     }
 
     @Override

@@ -34,6 +34,6 @@ public class CustomerDaoWrap implements CustomerDaoType {
 
     @Override
     public Customer findOne(String id) {
-        return daoMongo.findOne(id);
+        return daoMongo.findById(id).isPresent() ? daoMongo.findById(id).get() : null;
     }
 }

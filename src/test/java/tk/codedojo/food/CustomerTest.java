@@ -5,13 +5,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import tk.codedojo.food.beans.Customer;
 import tk.codedojo.food.dao.CustomerDaoType;
 import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
 import tk.codedojo.food.exception.CustomerException;
 import tk.codedojo.food.exception.UserNameException;
 import tk.codedojo.food.service.CustomerServiceImpl;
+
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -64,20 +66,21 @@ public class CustomerTest {
 
     @Test
     public void testUpdateCustomer() throws CustomerException{
-        when(customerDao.findOne("1")).thenReturn(new Customer("1", "l", "f", "myname", "12345", ""));
+        when(customerDao.findById("1")).thenReturn(Optional.of(
+                new Customer("1", "l", "f", "myname", "12345", "")));
         customerService.updateCustomer(new Customer("1", "l", "f", "newname", "12345", ""));
     }
 
     @Test(expected = CustomerException.class)
     public void testUpdateDuplicateCustomer() throws CustomerException{
         when(customerDao.getCustomerByUserName("newname")).thenReturn(new Customer("2","l","f","newname","12345",""));
-        when(customerDao.findOne("1")).thenReturn(new Customer("1", "l", "f", "myname", "12345", ""));
+        when(customerDao.findById("1")).thenReturn(Optional.of(
+                new Customer("1", "l", "f", "myname", "12345", "")));
         customerService.updateCustomer(new Customer("1", "l", "f", "newname", "12345", ""));
     }
 
     @Test(expected = CustomerException.class)
     public void testUpdateCustomerBadId() throws CustomerException{
-        when(customerDao.getCustomerByUserName("newname")).thenReturn(new Customer("1","l","f","oldname","12345",""));
         customerService.updateCustomer(new Customer("2","l","f","newname","12345","my@addre.ss"));
     }
 }

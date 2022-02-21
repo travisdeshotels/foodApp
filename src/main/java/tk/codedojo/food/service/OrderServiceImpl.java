@@ -1,7 +1,5 @@
 package tk.codedojo.food.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.*;
@@ -27,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void completeOrder(String orderID) throws OrderNotFoundException{
-        Order order = orderDao.findOne(orderID);
+        Order order = orderDao.findById(orderID).isPresent() ? orderDao.findById(orderID).get() : null;
         if (order == null){
             throw new OrderNotFoundException("Cannot complete order, order id invalid!");
         }
@@ -62,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void cancelOrder(String orderID) throws OrderException {
-        Order order = orderDao.findOne(orderID);
+        Order order = orderDao.findById(orderID).isPresent() ? orderDao.findById(orderID).get() : null;
         if (order == null){
             throw new OrderException("Cannot cancel order, order id invalid!");
         } else if (OrderStatus.COMPLETE.equals(order.getStatus())){
@@ -87,13 +85,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void validateCustomer(Order order) throws InvalidOrderException {
-        if(customerDao.findOne(order.getCustomerID()) == null){
+        if(!customerDao.findById(order.getCustomerID()).isPresent()){
             throw new InvalidOrderException("Order does not have a valid customer!");
         }
     }
 
     private Restaurant validateRestaurant(Order order) throws InvalidOrderException {
-        Restaurant restaurant = restaurantDao.findOne(order.getRestaurantID());
+        Restaurant restaurant = restaurantDao.findById(order.getRestaurantID()).isPresent() ?
+                                                       restaurantDao.findById(order.getRestaurantID()).get() : null;
         if(restaurant == null){
             throw new InvalidOrderException("Order does not have a valid restaurant!");
         }

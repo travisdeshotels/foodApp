@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
     plugin = {"pretty", "summary"},
-    strict = true,
     features = "src/test/java/tk/codedojo/food/fntest/features",
     glue = "tk.codedojo.food.steps",
     tags = "not @functional")

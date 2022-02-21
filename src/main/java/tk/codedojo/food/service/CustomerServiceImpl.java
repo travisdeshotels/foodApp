@@ -50,7 +50,7 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     private Customer getCustomerFromDatabase(String id) throws CustomerException {
-        Customer old = dao.findOne(id);
+        Customer old = findOne(id);
 
         if(old == null){
             throw new CustomerException("Customer id is invalid! : "+ id);
@@ -71,7 +71,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public Customer findOne(String id) {
-        return dao.findOne(id);
+        return dao.findById(id).isPresent() ? dao.findById(id).get() : null;
     }
 
     @Override
