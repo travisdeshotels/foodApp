@@ -1,11 +1,11 @@
 package tk.codedojo.food;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import tk.codedojo.food.beans.Customer;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Order;
@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class OrderTest {
 
     @Mock
@@ -36,63 +36,56 @@ public class OrderTest {
     private OrderDaoMongo orderDao;
     private OrderServiceImpl orderService;
 
-    @Before
+    @BeforeEach
     public void setupMock(){
         orderService = new OrderServiceImpl(customerDao, restaurantDao, orderDao);
     }
 
     @Test
-    public void testMockCreation(){
-        assertNotNull(customerDao);
-        assertNotNull(restaurantDao);
-        assertNotNull(orderDao);
-    }
-
-    @Test (expected = NullPointerException.class)
     public void testNullFoodItem(){
-        MenuItem item = new MenuItem(null, 1d);
+        assertThrows(NullPointerException.class, () -> new MenuItem(null, 1d));
     }
 
-    @Test (expected = NullPointerException.class)
+    @Test
     public void testNullPrice(){
-        MenuItem item = new MenuItem("fod", null);
+        assertThrows(NullPointerException.class, () ->  new MenuItem("fod", null));
     }
 
-    @Test (expected = NullPointerException.class)
+    @Test
     public void testNullMenuItem(){
-        OrderItem item = new OrderItem(null, 1);
+        assertThrows(NullPointerException.class, () -> new OrderItem(null, 1));
     }
 
-    @Test (expected = NullPointerException.class)
+    @Test
     public void testNullQuantity(){
         MenuItem menuItem = new MenuItem("food", 1d);
-        OrderItem orderItem = new OrderItem(menuItem, null);
+        assertThrows(NullPointerException.class, () -> new OrderItem(menuItem, null));
     }
 
-    @Ignore
-    @Test (expected = NullPointerException.class)
+    @Disabled
+    @Test
     public void testNullCustomerID(){
         MenuItem menuItem = new MenuItem("food", 1d);
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", null, "1", orderItems);
+        assertThrows(NullPointerException.class, () -> new Order("1", null, "1", orderItems));
     }
 
-    @Ignore
-    @Test (expected = NullPointerException.class)
+    @Disabled
+    @Test
     public void testNullRestaurantID(){
         MenuItem menuItem = new MenuItem("food", 1d);
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", "1", null, orderItems);
+        assertThrows(NullPointerException.class, () -> new Order("1", "1", null, orderItems));
     }
 
-    @Ignore
-    @Test (expected = NullPointerException.class)
+    @Disabled
+    @Test
     public void testNullItemList(){
-        Order order = new Order("1", "1", "1", null);
+        assertThrows(NullPointerException.class, () -> new Order("1", "1", "1", null));
     }
 
     @Test
@@ -101,20 +94,21 @@ public class OrderTest {
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        Order order = new Order("1", "1", "1", orderItems);
+        new Order("1", "1", "1", orderItems);
     }
 
-    @Test (expected = InvalidOrderException.class)
+    @Test
     public void testInvalidRestaurant() throws InvalidOrderException {
         when(restaurantDao.findById("1")).thenReturn(Optional.empty());
         MenuItem menuItem = new MenuItem("chaudin", 2d);
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        orderService.addOrder(new Order("", "1", "1", orderItems));
+        assertThrows(InvalidOrderException.class, () ->
+                orderService.addOrder(new Order("", "1", "1", orderItems)));
     }
 
-    @Test (expected = InvalidOrderException.class)
+    @Test
     public void testInvalidCustomer() throws InvalidOrderException {
         MenuItem menuItem = new MenuItem("chaudin", 2d);
         List<MenuItem> menuItems = new ArrayList<>();
@@ -125,11 +119,12 @@ public class OrderTest {
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        orderService.addOrder(new Order("", "1", "1", orderItems));
+        assertThrows(InvalidOrderException.class, () ->
+                orderService.addOrder(new Order("", "1", "1", orderItems)));
     }
 
-    @Test (expected = InvalidOrderException.class)
-    public void testItemNotOnMenu() throws InvalidOrderException {
+    @Test
+    public void testItemNotOnMenu(){
         MenuItem menuItem = new MenuItem("chaudin", 2d);
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(menuItem);
@@ -141,7 +136,8 @@ public class OrderTest {
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
-        orderService.addOrder(new Order("", "1", "1",orderItems));
+        assertThrows(InvalidOrderException.class, () ->
+                orderService.addOrder(new Order("", "1", "1",orderItems)));
     }
 
     @Test
@@ -159,10 +155,12 @@ public class OrderTest {
         orderService.addOrder(new Order("", "1", "1", orderItems));
     }
 
-    @Test (expected = OrderNotFoundException.class)
-    public void testCompleteNullOrder() throws OrderNotFoundException {
+    @Test
+    public void testCompleteNullOrder(){
         when(orderDao.findById("1")).thenReturn(Optional.empty());
-        orderService.completeOrder("1");
+        assertThrows(OrderNotFoundException.class, () ->
+                orderService.completeOrder("1"));
+
     }
 
     @Test

@@ -1,10 +1,10 @@
 package tk.codedojo.food;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
 import tk.codedojo.food.dao.mongo.RestaurantDaoMongo;
@@ -14,43 +14,43 @@ import tk.codedojo.food.service.RestaurantServiceImpl;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RestaurantTest {
     @Mock
     private RestaurantDaoMongo restaurantDao;
     private RestaurantServiceImpl restaurantService;
 
-    @Before
+    @BeforeEach
     public void setupMock(){
         restaurantService = new RestaurantServiceImpl(restaurantDao);
     }
 
     @Test
-    public void testMockCreation(){
-        assertNotNull(restaurantDao);
-    }
-
-    @Test (expected = NullPointerException.class)
     public void testNullName(){
-        Restaurant restaurant = new Restaurant("1", null, "123 street", null);
+        assertThrows(NullPointerException.class, () ->
+                new Restaurant("1", null, "123 street", null));
     }
 
-    @Test (expected = RestaurantException.class)
-    public void testBlankName() throws RestaurantException {
-        restaurantService.addRestaurant(new Restaurant("2", "", "123 street", null));
+    @Test
+    public void testBlankName(){
+        assertThrows(RestaurantException.class, () ->
+                restaurantService.addRestaurant(new Restaurant("2", "", "123 street", null)));
     }
 
-    @Test (expected = NullPointerException.class)
+    @Test
     public void testNullAddress(){
-        Restaurant restaurant = new Restaurant("3", "joe's", null, null);
+        assertThrows(NullPointerException.class, () ->
+                new Restaurant("3", "joe's", null, null));
     }
 
-    @Test (expected = RestaurantException.class)
-    public void testBlankAddress() throws RestaurantException {
-        restaurantService.addRestaurant(new Restaurant("4", "joe's", "", null));
+    @Test
+    public void testBlankAddress(){
+        assertThrows(RestaurantException.class, () ->
+                restaurantService.addRestaurant(new Restaurant("4", "joe's", "", null)));
     }
 
     @Test
@@ -58,37 +58,42 @@ public class RestaurantTest {
         restaurantService.addRestaurant(new Restaurant("5", "joe's", "123 street", null));
     }
 
-    @Test (expected = RestaurantException.class)
+    @Test
     public void testNullRestaurantUpdate() throws RestaurantException {
         when(restaurantDao.findById("6")).thenReturn(Optional.empty());
-        restaurantService.updateMenu("6", new ArrayList<>());
+        assertThrows(RestaurantException.class, () ->
+                restaurantService.updateMenu("6", new ArrayList<>()));
     }
 
-    @Test (expected = RestaurantException.class)
+    @Test
     public void testNullMenuUpdate() throws RestaurantException {
         when(restaurantDao.findById("7")).thenReturn(Optional.of(
                 new Restaurant("7", "moe's", "234 street", new ArrayList<>())));
-        restaurantService.updateMenu("7", null);
+        assertThrows(RestaurantException.class, () ->
+                restaurantService.updateMenu("7", null));
     }
 
-    @Test (expected = RestaurantException.class)
+    @Test
     public void testBadPrice() throws RestaurantException {
         ArrayList<MenuItem> items = new ArrayList<>();
         MenuItem item = new MenuItem("fooditem",-1d);
         items.add(item);
         when(restaurantDao.findById("8")).thenReturn(Optional.of(
                 new Restaurant("8", "moe's", "234 street", null)));
-        restaurantService.updateMenu("8", items);
+        assertThrows(RestaurantException.class, () ->
+                restaurantService.updateMenu("8", items));
+
     }
 
-    @Test (expected = RestaurantException.class)
+    @Test
     public void testBadItemName() throws RestaurantException {
         ArrayList<MenuItem> items = new ArrayList<>();
         MenuItem item = new MenuItem("",1d);
         items.add(item);
         when(restaurantDao.findById("9")).thenReturn(Optional.of(
                 new Restaurant("9", "moe's", "234 street", null)));
-        restaurantService.updateMenu("9", items);
+        assertThrows(RestaurantException.class, () ->
+                restaurantService.updateMenu("9", items));
     }
 
     @Test

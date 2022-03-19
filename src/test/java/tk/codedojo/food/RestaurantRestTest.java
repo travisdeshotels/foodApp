@@ -1,15 +1,15 @@
 package tk.codedojo.food;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -24,24 +24,24 @@ import tk.codedojo.food.service.RestaurantService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
-@RunWith(MockitoJUnitRunner.class)
-@WebMvcTest
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(controllers = RestaurantController.class)
 public class RestaurantRestTest {
+    @Autowired
     private MockMvc mockMvc;
-    @Mock
+    @MockBean
     private RestaurantService restaurantService;
-
-    @InjectMocks
+    @Autowired
     private RestaurantController restaurantController;
 
-    @Before
+    @BeforeEach
     public void setup(){
         this.mockMvc = MockMvcBuilders.standaloneSetup(restaurantController).build();
     }
