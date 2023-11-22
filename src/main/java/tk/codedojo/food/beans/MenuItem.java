@@ -1,16 +1,13 @@
 package tk.codedojo.food.beans;
 
-import lombok.*;
-
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NonNull;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
-@Getter
-@Setter
+@Data
 public class MenuItem {
     @NonNull
     private String foodItem;
