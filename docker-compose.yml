@@ -4,5 +4,13 @@ services:
         build: .
         ports:
             - 8080:8080
+        depends_on:
+            - database
     database:
         image: mongo
+        volumes:
+            - food-data:/data/db
+            - food-data-config:/data/configdb
+volumes:
+    food-data:
+    food-data-config:
