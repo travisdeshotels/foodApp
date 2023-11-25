@@ -1,4 +1,4 @@
-package tk.codedojo.food;
+package tk.codedojo.food.fntest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
@@ -13,6 +13,8 @@ import java.net.URL;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static tk.codedojo.food.constants.FoodAppTestConstants.SERVICE_HOST;
 
 public class FunctionalImpl {
     @Getter @Setter
@@ -30,13 +32,13 @@ public class FunctionalImpl {
             menu.add(new MenuItem("sandwich", 1.0D));
         }
         ObjectMapper mapper = new ObjectMapper();
-        this.responseCode = this.putData("http://localhost:8080/api/food/restaurant/id/" + id,
+        this.responseCode = this.putData("http://" + SERVICE_HOST + ":8080/api/food/restaurant/id/" + id,
                 mapper.writeValueAsString(menu));
     }
 
     public void cancelOrder(String userName) throws Exception{
         String orderID = this.orderId;
-        URL url = new URL("http://localhost:8080/api/food/order/id/" + orderID);
+        URL url = new URL("http://" + SERVICE_HOST + ":8080/api/food/order/id/" + orderID);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("DELETE");
         conn.setRequestProperty("Content-Type", "application/json");
@@ -45,7 +47,7 @@ public class FunctionalImpl {
 
     public void completeOrder(String userName) throws Exception{
         String orderID = this.orderId;
-        String url = "http://localhost:8080/api/food/order/id/" + orderID;
+        String url = "http://" + SERVICE_HOST + ":8080/api/food/order/id/" + orderID;
         this.responseCode = this.putData(url, "");
     }
 
@@ -58,7 +60,7 @@ public class FunctionalImpl {
     }
 
     public void addRestaurant(String name) throws Exception{
-        URL url = new URL("http://localhost:8080/api/food/restaurant");
+        URL url = new URL("http://" + SERVICE_HOST + ":8080/api/food/restaurant");
         Restaurant r = new Restaurant();
         r.setName(name);
         r.setAddress("my street");
@@ -79,7 +81,7 @@ public class FunctionalImpl {
     }
 
     public void addCustomer(String userName) throws Exception{
-        URL url = new URL("http://localhost:8080/api/food/customer");
+        URL url = new URL("http://" + SERVICE_HOST + ":8080/api/food/customer");
         Customer customer = new Customer();
         customer.setUserName(userName);
         customer.setPassword("mypassword");
@@ -93,7 +95,7 @@ public class FunctionalImpl {
 
     public void addOrder(String userName) throws Exception{
         Order order = setOrderData(userName);
-        URL url = new URL("http://localhost:8080/api/food/order");
+        URL url = new URL("http://" + SERVICE_HOST + ":8080/api/food/order");
         ObjectMapper mapper = new ObjectMapper();
         System.out.println(mapper.writeValueAsString(order));
         int responseCode = this.postData(url, mapper.writeValueAsString(order), true);
@@ -111,7 +113,7 @@ public class FunctionalImpl {
         } else{
             r.setName(newName);
         }
-        URL url = new URL("http://localhost:8080/api/food/restaurant/update/" + r.getId());
+        URL url = new URL("http://" + SERVICE_HOST + ":8080/api/food/restaurant/update/" + r.getId());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("PUT");
@@ -127,7 +129,7 @@ public class FunctionalImpl {
         Order order = setOrderData("test01", Collections.singletonList(
                 new OrderItem(new MenuItem(item, price), quantity)
         ));
-        URL url = new URL("http://localhost:8080/api/food/order");
+        URL url = new URL("http://" + SERVICE_HOST + ":8080/api/food/order");
         ObjectMapper mapper = new ObjectMapper();
         System.out.println(mapper.writeValueAsString(order));
         int responseCode = this.postData(url, mapper.writeValueAsString(order), true);
@@ -172,7 +174,7 @@ public class FunctionalImpl {
     }
 
     private List<Restaurant> getFilteredRestaurants(String filterString) throws Exception {
-        URL url = new URL("http://localhost:8080/api/food/restaurant" + filterString);
+        URL url = new URL("http://" + SERVICE_HOST + ":8080/api/food/restaurant" + filterString);
         ObjectMapper mapper = new ObjectMapper();
         List<Restaurant> restaurants = Arrays.asList(mapper.readValue(url, Restaurant[].class));
         List<Restaurant> restaurantsWithoutNulls = restaurants.parallelStream().filter(
@@ -185,7 +187,7 @@ public class FunctionalImpl {
     }
 
     private List<Customer> getFilteredCustomers(String filterString) throws Exception {
-        URL url = new URL("http://localhost:8080/api/food/customer" + filterString);
+        URL url = new URL("http://" + SERVICE_HOST + ":8080/api/food/customer" + filterString);
         ObjectMapper mapper = new ObjectMapper();
         List<Customer> customers = Arrays.asList(mapper.readValue(url, Customer[].class));
         List<Customer> customersWithoutNulls = customers.parallelStream().filter(
@@ -230,7 +232,7 @@ public class FunctionalImpl {
     }
 
     public int getOrderCount(String userName) throws Exception{
-        URL url = new URL("http://localhost:8080/api/food/order/customer/" +
+        URL url = new URL("http://" + SERVICE_HOST + ":8080/api/food/order/customer/" +
                 getCustomerID(userName));
         ObjectMapper mapper = new ObjectMapper();
         Order[] orders = mapper.readValue(url, Order[].class);

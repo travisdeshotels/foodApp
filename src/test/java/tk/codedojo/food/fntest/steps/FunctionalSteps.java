@@ -1,4 +1,4 @@
-package tk.codedojo.food.steps;
+package tk.codedojo.food.fntest.steps;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -6,13 +6,14 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import tk.codedojo.food.FunctionalImpl;
+import tk.codedojo.food.fntest.FunctionalImpl;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static tk.codedojo.food.constants.FoodAppTestConstants.SERVICE_HOST;
 
 public class FunctionalSteps {
     private FunctionalImpl impl = new FunctionalImpl();;
@@ -34,7 +35,7 @@ public class FunctionalSteps {
 
     @When("I try the healthcheck endpoint")
     public void iTryTheHealthcheckEndpoint() throws Exception {
-        URL url = new URL("http://localhost:8080/api/food/healthcheck");
+        URL url = new URL("http://" + SERVICE_HOST + ":8080/api/food/healthcheck");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
