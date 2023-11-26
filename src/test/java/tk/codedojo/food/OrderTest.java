@@ -11,6 +11,7 @@ import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Order;
 import tk.codedojo.food.beans.OrderItem;
 import tk.codedojo.food.beans.Restaurant;
+import tk.codedojo.food.beans.Role;
 import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
 import tk.codedojo.food.dao.mongo.OrderDaoMongo;
 import tk.codedojo.food.dao.mongo.RestaurantDaoMongo;
@@ -131,7 +132,7 @@ public class OrderTest {
         when(restaurantDao.findById("1")).thenReturn(Optional.of(
                 new Restaurant("1", "this", "12", menuItems)));
         when(customerDao.findById("1")).thenReturn(Optional.of(new Customer(
-                "1", "a", "a", "bcad", "p4ssw0rd", null)));
+                "1", "a", "a", "bcad", "p4ssw0rd", null, Role.USER)));
         menuItem = new MenuItem("gumbo", 1d);
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
@@ -148,7 +149,7 @@ public class OrderTest {
         when(restaurantDao.findById("1")).thenReturn(
                 Optional.of(new Restaurant("1", "this", "12", menuItems)));
         when(customerDao.findById("1")).thenReturn(Optional.of(
-                new Customer("1", "a", "a", "bcad", "p4ssw0rd", null)));
+                new Customer("1", "a", "a", "bcad", "p4ssw0rd", null, Role.USER)));
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);

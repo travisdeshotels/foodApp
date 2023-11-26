@@ -39,21 +39,21 @@ public class CustomerController {
             return service.findAll();
     }
 
-    @RequestMapping(method=RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Customer> addCustomer(@RequestBody Customer c){
-        Logger log = LoggerFactory.getLogger(CustomerController.class.getName());
-        try {
-            service.addCustomer(c);
-        } catch (UserNameException e){
-            log.error("UserNameException", e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e){
-            log.error("", e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        log.trace("Customer added: " + c.toString());
-        return new ResponseEntity<>(c, HttpStatus.CREATED);
-    }
+//    @RequestMapping(method=RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Customer> addCustomer(@RequestBody Customer c){
+//        Logger log = LoggerFactory.getLogger(CustomerController.class.getName());
+//        try {
+//            service.addCustomer(c);
+//        } catch (UserNameException e){
+//            log.error("UserNameException", e);
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        } catch (Exception e){
+//            log.error("", e);
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//        log.trace("Customer added: " + c.toString());
+//        return new ResponseEntity<>(c, HttpStatus.CREATED);
+//    }
 
     @RequestMapping(method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Customer> updateCustomer(@RequestBody Customer c){
