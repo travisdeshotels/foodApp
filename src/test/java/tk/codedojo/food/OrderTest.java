@@ -11,7 +11,7 @@ import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Order;
 import tk.codedojo.food.beans.OrderItem;
 import tk.codedojo.food.beans.Restaurant;
-import tk.codedojo.food.beans.Role;
+import tk.codedojo.food.beans.security.Role;
 import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
 import tk.codedojo.food.dao.mongo.OrderDaoMongo;
 import tk.codedojo.food.dao.mongo.RestaurantDaoMongo;

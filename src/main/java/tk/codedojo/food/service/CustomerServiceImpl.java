@@ -69,12 +69,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username){
-                return dao.getCustomerByEmail(username);
-            }
-        };
+        return username -> dao.getCustomerByEmail(username);
     }
 
     @Override

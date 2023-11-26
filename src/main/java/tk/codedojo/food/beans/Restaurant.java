@@ -1,6 +1,9 @@
 package tk.codedojo.food.beans;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,10 +12,7 @@ import java.util.List;
 @Document
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
-@Getter
-@Setter
+@Data
 public class Restaurant {
     @Id
     private String id;

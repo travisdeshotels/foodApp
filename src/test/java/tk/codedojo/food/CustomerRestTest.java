@@ -18,9 +18,8 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import tk.codedojo.food.beans.Customer;
-import tk.codedojo.food.beans.Role;
+import tk.codedojo.food.beans.security.Role;
 import tk.codedojo.food.exception.CustomerException;
-import tk.codedojo.food.exception.UserNameException;
 import tk.codedojo.food.rest.controller.CustomerController;
 import tk.codedojo.food.service.CustomerService;
 

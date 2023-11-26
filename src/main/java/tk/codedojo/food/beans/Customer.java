@@ -3,17 +3,14 @@ package tk.codedojo.food.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import tk.codedojo.food.beans.security.Role;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,10 +18,7 @@ import java.util.List;
 @Document
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
-@Getter
-@Setter
+@Data
 public class Customer implements UserDetails {
     @Id
     private String id;
@@ -45,7 +39,7 @@ public class Customer implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return email;
     }
 
     @Override

@@ -14,8 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 import tk.codedojo.food.service.CustomerService;
-import tk.codedojo.food.service.CustomerServiceImpl;
-import tk.codedojo.food.service.JWTService;
+import tk.codedojo.food.service.security.JWTService;
 
 import java.io.IOException;
 

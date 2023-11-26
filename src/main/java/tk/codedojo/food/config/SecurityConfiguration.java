@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import tk.codedojo.food.beans.Role;
+import tk.codedojo.food.beans.security.Role;
 import tk.codedojo.food.service.CustomerService;
 
 @Configuration
@@ -29,10 +29,10 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/food/**")
+                .authorizeHttpRequests(request -> request.requestMatchers("/api/auth/**")
                         .permitAll()
                         .requestMatchers("/api/admin").hasAnyAuthority((Role.ADMIN.name()))
-                        .requestMatchers("/api/user").hasAnyAuthority((Role.USER.name()))
+                        .requestMatchers("/api/food").hasAnyAuthority((Role.USER.name()))
                                 .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(

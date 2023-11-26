@@ -1,19 +1,23 @@
-package tk.codedojo.food.service;
+package tk.codedojo.food.service.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JWTServiceImpl implements JWTService{
+public class JWTServiceImpl implements JWTService {
+    @Value("${spring.security.signin.key}")
+    private String signInKey;
 
     @Override
     public String generateToken(UserDetails userDetails){
@@ -24,8 +28,17 @@ public class JWTServiceImpl implements JWTService{
                 .compact();
     }
 
+    @Override
+    public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails){
+        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 604800000))
+                .signWith(getSigninKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     private Key getSigninKey(){
-        byte[] key = Decoders.BASE64.decode("");
+        byte[] key = Decoders.BASE64.decode(this.signInKey);
         return Keys.hmacShaKeyFor(key);
     }
 
