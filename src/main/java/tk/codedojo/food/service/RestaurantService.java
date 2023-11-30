@@ -7,7 +7,7 @@ import tk.codedojo.food.exception.RestaurantException;
 import java.util.List;
 
 public interface RestaurantService {
-    void addRestaurant(Restaurant r) throws RestaurantException;
+    String addRestaurant(Restaurant r) throws RestaurantException;
     Restaurant updateMenu(String restaurantID, List<MenuItem> menu) throws RestaurantException;
     List<Restaurant> findAll();
     Restaurant findOne(String id);

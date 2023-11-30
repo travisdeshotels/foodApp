@@ -6,12 +6,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.Customer;
+import tk.codedojo.food.beans.Restaurant;
 import tk.codedojo.food.beans.security.JwtAuthenticationResponse;
 import tk.codedojo.food.beans.security.RefreshTokenRequest;
 import tk.codedojo.food.beans.security.Role;
 import tk.codedojo.food.beans.security.SignUpRequest;
 import tk.codedojo.food.beans.security.SignInRequest;
 import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
+import tk.codedojo.food.exception.RestaurantException;
+import tk.codedojo.food.service.RestaurantService;
 
 import java.util.HashMap;
 
@@ -22,16 +25,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+    private final RestaurantService restaurantService;
 
     @Override
-    public Customer signup(SignUpRequest request){
+    public Customer signup(SignUpRequest request) throws RestaurantException {
         Customer customer = new Customer();
+        customer.setRole(Role.USER);
+        String restaurantId = null;
+        if (request.getRestaurantInfo() != null){
+            restaurantId = restaurantService.addRestaurant(new Restaurant(request.getRestaurantInfo()));
+            customer.setRole(Role.OWNER);
+        }
         customer.setEmail(request.getEmail());
         customer.setFirstName(request.getFirstName());
         customer.setLastName(request.getLastName());
         customer.setUserName(request.getUserName());
-        customer.setRole(Role.USER);
         customer.setPassword(passwordEncoder.encode(request.getPassword()));
+        customer.setRestaurantId(restaurantId);
 
         return dao.save(customer);
     }

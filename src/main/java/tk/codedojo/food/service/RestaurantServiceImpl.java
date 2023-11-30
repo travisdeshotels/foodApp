@@ -19,14 +19,16 @@ public class RestaurantServiceImpl implements RestaurantService {
         this.dao = dao;
     }
 
-    public void addRestaurant(Restaurant r) throws RestaurantException{
-        if("".equals(r.getName())){
+    public String addRestaurant(Restaurant r) throws RestaurantException{
+        String restaurantId;
+        if(r.getName().isEmpty()){
             throw new RestaurantException("Restaurants must have names!");
-        } else if ("".equals(r.getAddress())){
+        } else if (r.getAddress().isEmpty()){
             throw new RestaurantException("Restaurants must have an address!");
         } else{
-            dao.save(r);
+            restaurantId = dao.save(r).getId();
         }
+        return restaurantId;
     }
 
     public Restaurant updateMenu(String id, List<MenuItem> menu) throws RestaurantException{

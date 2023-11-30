@@ -39,21 +39,21 @@ public class RestaurantController {
         return service.findAll();
     }
 
-    @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<String> addRestaurant(@RequestBody Restaurant r){
-        Logger log = LoggerFactory.getLogger(RestController.class.getName());
-        try {
-            service.addRestaurant(r);
-        } catch (RestaurantException e){
-            log.error("RestaurantException", e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e){
-            log.error("", e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        log.trace("Restaurant added: " + r.toString());
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+//    @RequestMapping(method=RequestMethod.POST)
+//    public ResponseEntity<String> addRestaurant(@RequestBody Restaurant r){
+//        Logger log = LoggerFactory.getLogger(RestController.class.getName());
+//        try {
+//            service.addRestaurant(r);
+//        } catch (RestaurantException e){
+//            log.error("RestaurantException", e);
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        } catch (Exception e){
+//            log.error("", e);
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//        log.trace("Restaurant added: " + r.toString());
+//        return new ResponseEntity<>(HttpStatus.CREATED);
+//    }
 
     @RequestMapping(method=RequestMethod.PUT, value="/update/{id}")
     public ResponseEntity<Restaurant> updateRestaurant(@PathVariable String id, @RequestBody Restaurant r){

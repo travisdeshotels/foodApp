@@ -21,4 +21,8 @@ public class Restaurant {
     @NonNull
     private String address;
     private List<MenuItem> menuItems;
+    public Restaurant(RestaurantInfo r){
+        this.name = r.getRestaurantName();
+        this.address = r.getRestaurantAddress();
+    }
 }

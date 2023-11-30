@@ -11,6 +11,7 @@ import tk.codedojo.food.beans.security.JwtAuthenticationResponse;
 import tk.codedojo.food.beans.security.RefreshTokenRequest;
 import tk.codedojo.food.beans.security.SignUpRequest;
 import tk.codedojo.food.beans.security.SignInRequest;
+import tk.codedojo.food.exception.RestaurantException;
 import tk.codedojo.food.service.security.AuthenticationService;
 
 @RestController
@@ -21,7 +22,11 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     public ResponseEntity<Customer> signup(@RequestBody SignUpRequest request){
-        return ResponseEntity.ok(service.signup(request));
+        try {
+            return ResponseEntity.ok(service.signup(request));
+        } catch (RestaurantException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PostMapping("/signin")

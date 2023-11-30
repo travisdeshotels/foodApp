@@ -31,6 +31,7 @@ public class Customer implements UserDetails {
     @NonNull
     private String email;
     private Role role;
+    private String restaurantId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
