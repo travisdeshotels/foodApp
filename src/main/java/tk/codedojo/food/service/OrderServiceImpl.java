@@ -3,9 +3,9 @@ package tk.codedojo.food.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.*;
-import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
-import tk.codedojo.food.dao.mongo.OrderDaoMongo;
-import tk.codedojo.food.dao.mongo.RestaurantDaoMongo;
+import tk.codedojo.food.dao.CustomerDaoMongo;
+import tk.codedojo.food.dao.OrderDaoMongo;
+import tk.codedojo.food.dao.RestaurantDaoMongo;
 import tk.codedojo.food.exception.*;
 
 import java.util.List;

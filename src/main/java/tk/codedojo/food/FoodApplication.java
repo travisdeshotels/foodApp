@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import tk.codedojo.food.beans.Customer;
 import tk.codedojo.food.beans.security.Role;
-import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
+import tk.codedojo.food.dao.CustomerDaoMongo;
 import tk.codedojo.food.util.FoodUtil;
 
 @SpringBootApplication

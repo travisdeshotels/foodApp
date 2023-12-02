@@ -1,4 +1,4 @@
-package tk.codedojo.food.dao.mongo;
+package tk.codedojo.food.dao;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;

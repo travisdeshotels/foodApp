@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import tk.codedojo.food.beans.*;
-import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
+import tk.codedojo.food.dao.CustomerDaoMongo;
 import tk.codedojo.food.exception.InvalidOrderException;
 import tk.codedojo.food.exception.OrderNotFoundException;
 import tk.codedojo.food.rest.controller.OrderController;

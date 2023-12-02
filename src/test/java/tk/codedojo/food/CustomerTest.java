@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tk.codedojo.food.beans.Customer;
 import tk.codedojo.food.beans.security.Role;
-import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
+import tk.codedojo.food.dao.CustomerDaoMongo;
 import tk.codedojo.food.exception.CustomerException;
 import tk.codedojo.food.service.CustomerServiceImpl;
 

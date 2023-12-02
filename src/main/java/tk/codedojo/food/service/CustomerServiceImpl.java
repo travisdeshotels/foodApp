@@ -1,14 +1,11 @@
 package tk.codedojo.food.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import tk.codedojo.food.beans.Customer;
-import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
+import tk.codedojo.food.dao.CustomerDaoMongo;
 import tk.codedojo.food.exception.CustomerException;
-import tk.codedojo.food.exception.UserNameException;
 
 import java.util.List;
 

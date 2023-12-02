@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
-import tk.codedojo.food.dao.mongo.RestaurantDaoMongo;
+import tk.codedojo.food.dao.RestaurantDaoMongo;
 import tk.codedojo.food.exception.*;
 
 import java.util.List;

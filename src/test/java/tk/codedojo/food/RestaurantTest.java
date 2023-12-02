@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
-import tk.codedojo.food.dao.mongo.RestaurantDaoMongo;
+import tk.codedojo.food.dao.RestaurantDaoMongo;
 import tk.codedojo.food.exception.RestaurantException;
 import tk.codedojo.food.service.RestaurantServiceImpl;
 

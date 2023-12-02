@@ -12,7 +12,7 @@ import tk.codedojo.food.beans.security.RefreshTokenRequest;
 import tk.codedojo.food.beans.security.Role;
 import tk.codedojo.food.beans.security.SignUpRequest;
 import tk.codedojo.food.beans.security.SignInRequest;
-import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
+import tk.codedojo.food.dao.CustomerDaoMongo;
 import tk.codedojo.food.exception.RestaurantException;
 import tk.codedojo.food.service.RestaurantService;
 

@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import tk.codedojo.food.beans.MenuItem;
 import tk.codedojo.food.beans.Restaurant;
-import tk.codedojo.food.dao.mongo.CustomerDaoMongo;
+import tk.codedojo.food.dao.CustomerDaoMongo;
 import tk.codedojo.food.exception.RestaurantException;
 import tk.codedojo.food.rest.controller.RestaurantController;
 import tk.codedojo.food.service.CustomerService;
