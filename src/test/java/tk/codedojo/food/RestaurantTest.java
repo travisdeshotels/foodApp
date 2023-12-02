@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,7 +57,9 @@ public class RestaurantTest {
 
     @Test
     public void testValidAdd() throws RestaurantException {
-        restaurantService.addRestaurant(new Restaurant("5", "joe's", "123 street", null));
+        when(restaurantDao.save(any())).thenReturn(new Restaurant("5", "joe's", "123 street", null));
+        String id = restaurantService.addRestaurant(new Restaurant("5", "joe's", "123 street", null));
+        assertEquals("5", id);
     }
 
     @Test

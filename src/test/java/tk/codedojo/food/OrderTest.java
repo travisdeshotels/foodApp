@@ -132,7 +132,7 @@ public class OrderTest {
         when(restaurantDao.findById("1")).thenReturn(Optional.of(
                 new Restaurant("1", "this", "12", menuItems)));
         when(customerDao.findById("1")).thenReturn(Optional.of(new Customer(
-                "1", "a", "a", "bcad", "p4ssw0rd", null, Role.USER)));
+                "1", "a", "a", "bcad", "p4ssw0rd", "me@gov.gov", Role.USER, null)));
         menuItem = new MenuItem("gumbo", 1d);
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
@@ -149,7 +149,7 @@ public class OrderTest {
         when(restaurantDao.findById("1")).thenReturn(
                 Optional.of(new Restaurant("1", "this", "12", menuItems)));
         when(customerDao.findById("1")).thenReturn(Optional.of(
-                new Customer("1", "a", "a", "bcad", "p4ssw0rd", null, Role.USER)));
+                new Customer("1", "a", "a", "bcad", "p4ssw0rd", "me@gov.gov", Role.USER, null)));
         OrderItem orderItem = new OrderItem(menuItem, 1);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);

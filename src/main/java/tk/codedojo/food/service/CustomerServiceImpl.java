@@ -48,7 +48,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public void updateCustomer(Customer c) throws CustomerException {
         Customer old = getCustomerFromDatabase(c.getId());
-        checkIfUsernameIsInUse(c.getUsername(), old.getUsername());
+        checkIfUsernameIsInUse(c.getUserName(), old.getUserName());
         dao.save(c);
     }
 

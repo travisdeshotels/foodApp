@@ -43,6 +43,10 @@ public class Customer implements UserDetails {
         return email;
     }
 
+    public @NonNull String getUserName(){
+        return userName;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

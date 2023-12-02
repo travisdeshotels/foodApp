@@ -31,7 +31,7 @@ public class CustomerTest {
 
     @Test
     public void testNullUserName(){
-        assertThrows(NullPointerException.class, () -> new Customer("4","Smith","Sob",null, "p4ssw0rd", null, Role.USER));
+        assertThrows(NullPointerException.class, () -> new Customer("4","Smith","Sob",null, "p4ssw0rd", null, Role.USER, null));
     }
 
 //    @Test
@@ -63,24 +63,26 @@ public class CustomerTest {
     @Test
     public void testUpdateCustomer() throws CustomerException{
         when(customerDao.findById("1")).thenReturn(Optional.of(
-                new Customer("1", "l", "f", "myname", "12345", "", Role.USER)));
-        customerService.updateCustomer(new Customer("1", "l", "f", "newname", "12345", "", Role.USER));
+                new Customer("1", "l", "f", "myname", "12345", "", Role.USER, null)));
+        customerService.updateCustomer(new Customer("1", "l", "f", "newname", "12345", "", Role.USER, null));
     }
 
     @Test
     public void testUpdateDuplicateCustomer(){
-        when(customerDao.getCustomerByUserName("newname")).thenReturn(new Customer("2","l","f","newname","12345","", Role.USER));
+        when(customerDao.getCustomerByUserName("newname")).thenReturn(new Customer("2","l","f",
+                                      "newname","12345","", Role.USER, null));
         when(customerDao.findById("1")).thenReturn(Optional.of(
-                new Customer("1", "l", "f", "myname", "12345", "", Role.USER)));
+                new Customer("1", "l", "f", "myname", "12345", "",
+                             Role.USER, null)));
         assertThrows(CustomerException.class, () ->
-                customerService.updateCustomer(new Customer("1", "l", "f", "newname", "12345", "", Role.USER)));
+                customerService.updateCustomer(new Customer("1", "l", "f", "newname",
+                                      "12345", "", Role.USER, null)));
     }
 
     @Test
     public void testUpdateCustomerBadId(){
         assertThrows(CustomerException.class, () -> customerService.updateCustomer(
                 new Customer("2","l","f","newname","12345","my@addre.ss",
-                        Role.USER)));
+                        Role.USER, null)));
     }
 }
-
