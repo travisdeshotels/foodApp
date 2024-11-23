@@ -1,0 +1,12 @@
+version: "2.23.0"
+services:
+  database:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - food-data:/data/db
+      - food-data-config:/data/configdb
+volumes:
+  food-data:
+  food-data-config:

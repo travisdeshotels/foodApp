@@ -1,0 +1,11 @@
+{
+  "firstName": "first",
+  "lastName": "last",
+  "email": "bad@example.foo",
+  "password": "password",
+  "userName": "me",
+  "restaurantInfo": {
+    "restaurantName": "restaurant",
+    "restaurantAddress": "123 foobar st"
+  }
+}
