@@ -4,8 +4,7 @@ import io.github.travisdeshotels.food.beans.FoodConstants;
 import io.github.travisdeshotels.food.beans.MenuItem;
 import io.github.travisdeshotels.food.beans.Restaurant;
 import io.github.travisdeshotels.food.service.RestaurantService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +15,7 @@ import io.github.travisdeshotels.food.exception.RestaurantException;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping(FoodConstants.API_URL + "/restaurant")
 public class RestaurantController {
@@ -66,7 +66,6 @@ public class RestaurantController {
 
     @RequestMapping(method=RequestMethod.PUT, value="/id/{id}")
     public ResponseEntity<Restaurant> updateMenu(@PathVariable("id") String id, @RequestBody List<MenuItem> menu){
-        Logger log = LoggerFactory.getLogger(RestaurantController.class.getName());
         Restaurant r;
         try {
             r = service.updateMenu(id, menu);
@@ -77,7 +76,7 @@ public class RestaurantController {
             log.error("", e);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        log.trace("Menu updated for Restaurant: " + r.toString());
+        log.trace("Menu updated for Restaurant: {}", r.toString());
 
         return new ResponseEntity<>(r, HttpStatus.OK);
     }

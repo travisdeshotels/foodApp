@@ -3,8 +3,7 @@ package io.github.travisdeshotels.food.rest.controller;
 import io.github.travisdeshotels.food.beans.Customer;
 import io.github.travisdeshotels.food.beans.FoodConstants;
 import io.github.travisdeshotels.food.service.CustomerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +14,7 @@ import io.github.travisdeshotels.food.exception.CustomerException;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping(FoodConstants.API_URL + "/customer")
 public class CustomerController {
@@ -55,14 +55,13 @@ public class CustomerController {
 
     @RequestMapping(method=RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Customer> updateCustomer(@RequestBody Customer c){
-        Logger log = LoggerFactory.getLogger(CustomerController.class.getName());
         try{
             service.updateCustomer(c);
         } catch (CustomerException e){
             log.error("CustomerException", e);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        log.trace("Customer updated: " + c.toString());
+        log.trace("Customer updated: {}", c.toString());
         return new ResponseEntity<>(c, HttpStatus.OK);
     }
 }

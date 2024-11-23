@@ -3,8 +3,7 @@ package io.github.travisdeshotels.food.rest.controller;
 import io.github.travisdeshotels.food.beans.FoodConstants;
 import io.github.travisdeshotels.food.beans.Order;
 import io.github.travisdeshotels.food.service.OrderService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
@@ -16,11 +15,11 @@ import io.github.travisdeshotels.food.exception.OrderNotFoundException;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping(FoodConstants.API_URL + "/order")
 public class OrderController {
     private OrderService orderService;
-    private final Logger log = LoggerFactory.getLogger(OrderController.class.getName());
 
     @Autowired
     public OrderController(OrderService service){
@@ -64,7 +63,7 @@ public class OrderController {
             log.error("", e);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        log.trace("Order added: " + order.toString());
+        log.trace("Order added: {}", order.toString());
         return new ResponseEntity<>(orderWithId.getId(), HttpStatus.CREATED);
     }
 
@@ -79,7 +78,7 @@ public class OrderController {
             log.error("", e);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        log.trace("Completed order " + orderID);
+        log.trace("Completed order {}", orderID);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
