@@ -24,7 +24,7 @@
 
     </appender>
 
-    <logger name="tk.codedojo" level="warn"
+    <logger name="io.github.travisdeshotels" level="warn"
             additivity="false">
         <appender-ref ref="FILE-AUDIT" />
     </logger>
