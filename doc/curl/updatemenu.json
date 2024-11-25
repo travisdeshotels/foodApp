@@ -1,0 +1,18 @@
+[
+  {
+    "foodItem": "sandwich",
+    "price": 1.0
+  },
+  {
+    "foodItem": "bean",
+    "price": 1
+  },
+  {
+    "foodItem": "slice of bread",
+    "price": 1.5
+  },
+  {
+    "foodItem": "pea",
+    "price": 10.1
+  }
+]
