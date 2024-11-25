@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class FunctionalSteps {
-    private FunctionalImpl impl = new FunctionalImpl();;
+    private FunctionalImpl impl = new FunctionalImpl();
 
     @Before
     public void setup(){
@@ -45,9 +45,7 @@ public class FunctionalSteps {
 
     @Given("restaurant {word} exists")
     public void aRestaurantExists(String name) throws Exception {
-        if (!impl.restaurantExists(name)){
-            impl.addRestaurant(name);
-        }
+        assert impl.restaurantExists(name);
     }
 
     @And("customer {word} exists")
@@ -106,5 +104,10 @@ public class FunctionalSteps {
     @And("customer {word} orders {int} of {string} at {string}")
     public void customerTestOrdersItem(String name, int quantity, String item, String price) throws Exception {
         impl.customOrder(quantity, item, Double.valueOf(price));
+    }
+
+    @Given("restaurant owner has logged in")
+    public void restaurantOwnerHasLoggedIn() throws Exception {
+        impl.restaurantLogin();
     }
 }

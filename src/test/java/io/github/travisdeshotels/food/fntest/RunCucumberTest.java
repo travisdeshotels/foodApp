@@ -7,8 +7,8 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
     plugin = {"pretty", "summary"},
-    features = "src/test/java/tk/codedojo/food/fntest/features",
-    glue = "tk.codedojo.food.fntest.steps",
+    features = "src/test/java/io/github/travisdeshotels/food/fntest/features",
+    glue = "io.github.travisdeshotels.food.fntest.steps",
     tags = "not @functional")
 public class RunCucumberTest{
 }

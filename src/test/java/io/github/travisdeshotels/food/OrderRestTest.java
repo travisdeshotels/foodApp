@@ -21,7 +21,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import tk.codedojo.food.beans.*;
 import io.github.travisdeshotels.food.exception.InvalidOrderException;
 import io.github.travisdeshotels.food.exception.OrderNotFoundException;
 

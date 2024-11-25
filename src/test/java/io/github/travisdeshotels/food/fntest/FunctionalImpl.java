@@ -1,13 +1,15 @@
 package io.github.travisdeshotels.food.fntest;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.travisdeshotels.food.beans.*;
+import io.github.travisdeshotels.food.beans.security.SignUpRequest;
 import io.github.travisdeshotels.food.constants.FoodAppTestConstants;
 import lombok.Getter;
 import lombok.Setter;
-import tk.codedojo.food.beans.*;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -21,6 +23,7 @@ public class FunctionalImpl {
     private int responseCode = -1;
     @Getter @Setter
     private String orderId;
+    private String token;
 
     public void updateMenu(String restaurant, boolean isEmpty) throws Exception {
         String id = this.getRestaurant(restaurant).getId();
@@ -32,7 +35,8 @@ public class FunctionalImpl {
             menu.add(new MenuItem("sandwich", 1.0D));
         }
         ObjectMapper mapper = new ObjectMapper();
-        this.responseCode = this.putData("http://" + FoodAppTestConstants.SERVICE_HOST + ":8080/api/food/restaurant/id/" + id,
+        this.responseCode = this.putDataWithToken(
+                "http://" + FoodAppTestConstants.SERVICE_HOST + ":8080/api/food/restaurant/id/" + id,
                 mapper.writeValueAsString(menu));
     }
 
@@ -60,22 +64,19 @@ public class FunctionalImpl {
     }
 
     public void addRestaurant(String name) throws Exception{
-        URL url = new URL("http://" + FoodAppTestConstants.SERVICE_HOST + ":8080/api/food/restaurant");
-        Restaurant r = new Restaurant();
-        r.setName(name);
-        r.setAddress("my street");
-        List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem("sandwich", 1.0D));
-        if (name.equals("test01")) {
-            menuItems.add(new MenuItem("bean", 1D));
-            menuItems.add(new MenuItem("slice of bread", 1.5D));
-            menuItems.add(new MenuItem("pea", 10.1D));
-        }
-        r.setMenuItems(menuItems);
-        ObjectMapper mapper = new ObjectMapper();
-        int responseCode = this.postData(url, mapper.writeValueAsString(r));
+        URL url = new URL("http://" + FoodAppTestConstants.SERVICE_HOST + ":8080/api/auth/signup");
 
-        if (responseCode != HttpURLConnection.HTTP_CREATED) {
+        SignUpRequest request = new SignUpRequest();
+        request.setFirstName("First");
+        request.setLastName("Last");
+        request.setEmail("owner@rest.net");
+        request.setPassword("password");
+        request.setUserName("myUserName");
+        request.setRestaurantInfo(new RestaurantInfo("test01", "123 awful st"));
+        ObjectMapper mapper = new ObjectMapper();
+        int responseCode = this.postData(url, mapper.writeValueAsString(request));
+
+        if (responseCode != HttpURLConnection.HTTP_OK) {
             throw new RuntimeException("Failed : HTTP error code : " + responseCode);
         }
     }
@@ -118,6 +119,7 @@ public class FunctionalImpl {
         conn.setDoOutput(true);
         conn.setRequestMethod("PUT");
         conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("Authorization", "Bearer " + this.token);
         OutputStream os = conn.getOutputStream();
         ObjectMapper mapper = new ObjectMapper();
         os.write(mapper.writeValueAsString(r).getBytes());
@@ -175,15 +177,20 @@ public class FunctionalImpl {
 
     private List<Restaurant> getFilteredRestaurants(String filterString) throws Exception {
         URL url = new URL("http://" + FoodAppTestConstants.SERVICE_HOST + ":8080/api/food/restaurant" + filterString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Authorization", "Bearer " + this.token);
+        InputStream response = conn.getInputStream();
+        System.out.println(conn.getResponseCode());
         ObjectMapper mapper = new ObjectMapper();
-        List<Restaurant> restaurants = Arrays.asList(mapper.readValue(url, Restaurant[].class));
-        List<Restaurant> restaurantsWithoutNulls = restaurants.parallelStream().filter(
-                Objects::nonNull).collect(Collectors.toList());
-        if(!restaurantsWithoutNulls.isEmpty()){
-            System.out.println(restaurantsWithoutNulls.get(0).toString());
+        List<Restaurant> restaurants = mapper.readValue(response, new TypeReference<>() {
+        });
+
+        if(!restaurants.isEmpty()){
+            System.out.println(restaurants.get(0).toString());
         }
 
-        return restaurantsWithoutNulls;
+        return restaurants;
     }
 
     private List<Customer> getFilteredCustomers(String filterString) throws Exception {
@@ -219,11 +226,37 @@ public class FunctionalImpl {
         return conn.getResponseCode();
     }
 
+    private int postDataWithToken(URL url, String data) throws Exception{
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setDoOutput(true);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("Authorization", "Bearer " + this.token);
+        OutputStream os = conn.getOutputStream();
+        os.write(data.getBytes());
+        os.flush();
+
+        return conn.getResponseCode();
+    }
+
     private int putData(String url, String data) throws Exception {
         HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("PUT");
         conn.setRequestProperty("Content-Type", "application/json");
+        OutputStream os = conn.getOutputStream();
+        os.write(data.getBytes());
+        os.flush();
+
+        return conn.getResponseCode();
+    }
+
+    private int putDataWithToken(String url, String data) throws Exception {
+        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+        conn.setDoOutput(true);
+        conn.setRequestMethod("PUT");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("Authorization", "Bearer " + this.token);
         OutputStream os = conn.getOutputStream();
         os.write(data.getBytes());
         os.flush();
@@ -238,5 +271,51 @@ public class FunctionalImpl {
         Order[] orders = mapper.readValue(url, Order[].class);
 
         return orders.length;
+    }
+
+    public void restaurantLogin() throws Exception {
+        // loop to retry login after creating the account when it doesn't exist
+        for (int i=0;i<4;i++) {
+            URL url = new URL("http://" + FoodAppTestConstants.SERVICE_HOST + ":8080/api/auth/signin");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            OutputStream os = conn.getOutputStream();
+            ObjectMapper mapper = new ObjectMapper();
+            String data = mapper.writeValueAsString(new Object() {
+                @Getter
+                final String email = "owner@rest.net";
+                @Getter
+                final String password = "password";
+            });
+            os.write(data.getBytes());
+            os.flush();
+            os.close();
+
+            int responseCode = conn.getResponseCode();
+            System.out.println("POST Response Code :: " + responseCode);
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                LoginResponse loginResponse = mapper.readValue(conn.getInputStream(), LoginResponse.class);
+                System.out.println(loginResponse.getToken());
+                this.token = loginResponse.getToken();
+                break;
+            } else {
+                System.out.println("Login was not successful. Attempting to create the restaurant owner's account");
+                addRestaurant("test01");
+            }
+        }
+    }
+
+    public static void main(String[] args){
+        FunctionalImpl impl = new FunctionalImpl();
+        try {
+            impl.restaurantLogin();
+            impl.getFilteredRestaurants("?name=restaurant");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("oops");
+        }
     }
 }
