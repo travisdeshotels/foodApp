@@ -8,6 +8,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.github.travisdeshotels.food.constants.FoodAppTestConstants;
 import io.github.travisdeshotels.food.fntest.FunctionalImpl;
+import io.github.travisdeshotels.food.fntest.FunctionalImplOrder;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,15 +18,16 @@ import static org.junit.Assert.assertNull;
 
 public class FunctionalSteps {
     private FunctionalImpl impl = new FunctionalImpl();
+    private FunctionalImplOrder orderImpl = new FunctionalImplOrder();
 
     @Before
     public void setup(){
-        impl.setOrderId("-1");
+        orderImpl.setOrderId("-1");
     }
 
     @After
     public void cleanup(){
-        impl.setOrderId("-1");
+        orderImpl.setOrderId("-1");
     }
 
     @Given("the application is running")
@@ -50,19 +52,19 @@ public class FunctionalSteps {
 
     @And("customer {word} exists")
     public void aCustomerExists(String userName) throws Exception{
-        if (!impl.customerExists(userName)){
+        if (!orderImpl.customerExists(userName)){
             impl.addCustomer(userName);
         }
     }
 
     @And("customer {word} places an order")
     public void customerPlacesAnOrder(String userName) throws Exception {
-        impl.addOrder(userName);
+        orderImpl.addOrder(userName);
     }
 
     @Then("customer {word} cancels their order")
     public void customerCancelsTheirOrder(String userName) throws  Exception{
-        impl.cancelOrder(userName);
+        orderImpl.cancelOrder(userName);
     }
 
     @And("a response of {int} is returned")
@@ -73,7 +75,7 @@ public class FunctionalSteps {
 
     @And("customer {word} has no orders")
     public void theCustomerHasNoOrders(String userName) throws Exception {
-        assertEquals(0, impl.getOrderCount(userName));
+        assertEquals(0, orderImpl.getOrderCount(userName));
     }
 
     @When("{word} restaurant is renamed to {word}")
@@ -88,7 +90,7 @@ public class FunctionalSteps {
 
     @Then("customer {word} completes their order")
     public void customerTestCompletesTheirOrder(String customer) throws Exception {
-        impl.completeOrder(customer);
+        orderImpl.completeOrder(customer);
     }
 
     @When("{word} menu is updated")
@@ -103,7 +105,7 @@ public class FunctionalSteps {
 
     @And("customer {word} orders {int} of {string} at {string}")
     public void customerTestOrdersItem(String name, int quantity, String item, String price) throws Exception {
-        impl.customOrder(quantity, item, Double.valueOf(price));
+        orderImpl.customOrder(quantity, item, Double.valueOf(price));
     }
 
     @Given("restaurant owner has logged in")
