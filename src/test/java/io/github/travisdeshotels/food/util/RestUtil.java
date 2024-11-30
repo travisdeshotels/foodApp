@@ -92,7 +92,7 @@ public class RestUtil {
 
     public static Restaurant getRestaurant(String name, String token) throws Exception {
         List<Restaurant> restaurants = getFilteredRestaurants("?name=" + name, token);
-        if (!restaurants.isEmpty()){
+        if (restaurants != null){
             return restaurants.get(0);
         } else{
             return null;
@@ -110,11 +110,10 @@ public class RestUtil {
         List<Restaurant> restaurants = mapper.readValue(response, new TypeReference<>() {
         });
 
-        if(!restaurants.isEmpty()){
-            System.out.println(restaurants.get(0).toString());
+        if(restaurants.size() == 1 && restaurants.get(0) == null){
+            return null;
+        } else{
+            return restaurants;
         }
-
-        return restaurants;
     }
-
 }
